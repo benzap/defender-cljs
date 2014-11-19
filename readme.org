@@ -1,0 +1,38 @@
+* Introduction
+  defender-cljs is the old arcade classic Defender re-done in Three.js
+  using clojurescript
+
+* How To Play
+** Goal
+   Kill all of the enemies in a stage, while defending the humans on
+   the surface. To progress through the stages, kill all of the
+   enemies.
+
+** Loss
+   If your ship collides with an enemy, or gets hit by an enemy
+   projectile, you lose a life. When all of your lifes are spent, you
+   lose the game.
+
+** Enemies
+*** Lander
+    <insert image>
+
+    Attempts to grab humans from the surface and bring them to the top
+    of the screen, where they become mutants. If you kill the lander
+    while it is attempting to steal the human, you must catch the
+    human to prevent he/she from falling to their death.
+
+*** Mutant
+    <insert image>
+    
+    A fast moving enemy who is usually seen in numbers.
+
+    /More Coming Soon/
+
+* Game Controls
+  - W :: Move Ship Upwards
+  - D :: Move Ship Downwards
+  - Space :: Switch Ship Direction
+  - J :: Thrust
+  - K :: Fire
+  - B :: Bomb
