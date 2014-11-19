@@ -10,3 +10,11 @@ body {
 h1 {
   text-decoration: underline;
 }
+
+#app {
+    background-color: black;
+    position: relative;
+    width: 640px;
+    height: 480px;
+    margin: auto auto;
+}

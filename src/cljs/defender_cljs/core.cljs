@@ -4,6 +4,13 @@
 
 (def app-state (atom {:text "Hello Chest"}))
 
+(def game-state
+  (atom {:stage nil
+         :score 0
+         :enemies []
+         :lives 0
+         :player {:position [0 0]}}))
+
 (defn main []
   (om/root
     (fn [app owner]
