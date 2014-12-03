@@ -1,7 +1,9 @@
 (ns defender-cljs.canvas.core
   (:require [defender-cljs.canvas.object :as obj]
             [defender-cljs.canvas.camera :as cam]
-            [defender-cljs.canvas.hud :as hud]))
+            [defender-cljs.canvas.hud :as hud]
+            [defender-cljs.canvas.text :as text]
+            [defender-cljs.canvas.geometry :as geo]))
 
 (def dom (.getElementById js/document "app"))
 
@@ -21,35 +23,37 @@
                                            (* 1000 (/ 3 4)) 0
                                            1000 -1000))
 
-(defn square [x y width height
-              & {:keys [color]
-                 :or {color 0xaaffaa}}]
-  (let [geometry (THREE.BoxGeometry. width height 1)
-        material (THREE.MeshBasicMaterial. #js {:color color})
-        mesh (THREE.Mesh. geometry material)]
-    (obj/set-position! mesh x y)
-    mesh))
-
 (def main-scene (THREE.Scene.))
 (def hud-scene (THREE.Scene.))
 
-(def spinning-square (square 200 200 200 200))
+(def spinning-square (geo/square 200 200 200 200))
 
 (doto main-scene
   (.add camera)
-  (.add (square 50 50 100 100 :color 0x330000))
-  (.add (square 50 100 100 100))
+  (.add (geo/square 50 50 100 100 :color 0x330000))
+  (.add (geo/square 50 100 100 100))
   (.add spinning-square)
   )
 
-(def score-label (hud/create-label "score" :size 30))
+(def score-label (text/create-label "score" {:size 20}))
 
 (obj/set-position! score-label 10 700)
 
+(text/set-label-text! score-label "score:00000")
+;;(text/set-label-attrs! score-label {:size 40})
+
+(def some-line
+  (geo/draw-line 500 500
+                 [[30 30 0] [70 70 0]]
+                 :line-width 5
+                 :color 0x00ff00))
+
+(.log js/console some-line)
+
 (doto hud-scene
   (.add hud-camera)
-  #_(.add (square 500 10 1000 20 :color 0x555555))
-  (.add score-label))
+  (.add score-label)
+  (.add some-line))
 
 (.appendChild dom (-> renderer .-domElement))
 
