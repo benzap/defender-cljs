@@ -13,7 +13,7 @@
 
 (defn draw-line
   "Forms a set of lines into a line segment"
-  [x y vertices & {:keys [color line-width]
+  [vertices & {:keys [color line-width]
                :or {color 0xffaaaa
                     line-width 1}}]
   (let [material (THREE.LineBasicMaterial.
@@ -23,5 +23,4 @@
         line (THREE.Line. geometry material)]
     (doseq [[x y z] vertices]
       (.push (-> geometry .-vertices) (THREE.Vector3. x y z)))
-    (obj/set-position! line x y)
     line))

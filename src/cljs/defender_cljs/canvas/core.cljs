@@ -3,25 +3,19 @@
             [defender-cljs.canvas.camera :as cam]
             [defender-cljs.canvas.hud :as hud]
             [defender-cljs.canvas.text :as text]
-            [defender-cljs.canvas.geometry :as geo]))
+            [defender-cljs.canvas.geometry :as geo]
+            [defender-cljs.overlay.core :as overlay]))
 
 (def dom (.getElementById js/document "app"))
 
 (def width (.-clientWidth dom))
 (def height (.-clientHeight dom))
 
-(def left-bound)
-
 (def renderer (THREE.WebGLRenderer.))
 (.setSize renderer width height)
 
-(def camera (THREE.OrthographicCamera. 0 1000
-                                       (* 1000 (/ 3 4)) 0
-                                       1000 -1000))
-
-(def hud-camera (THREE.OrthographicCamera. 0 1000
-                                           (* 1000 (/ 3 4)) 0
-                                           1000 -1000))
+(def camera (cam/make-camera 0 1000 (* 1000 (/ 3 4)) 0))
+(def hud-camera (cam/make-camera 0 1000 (* 1000 (/ 3 4)) 0))
 
 (def main-scene (THREE.Scene.))
 (def hud-scene (THREE.Scene.))
@@ -35,16 +29,14 @@
   (.add spinning-square)
   )
 
-(def score-label (text/create-label "score" {:size 20}))
+;;(def score-label (text/create-label "score" {:size 20 :color 0xff00ff}))
+;;(obj/set-position! score-label 10 700)
 
-(obj/set-position! score-label 10 700)
-
-(text/set-label-text! score-label "score:00000")
+;;(text/set-label-text! score-label "002000000")
 ;;(text/set-label-attrs! score-label {:size 40})
 
 (def some-line
-  (geo/draw-line 500 500
-                 [[30 30 0] [70 70 0]]
+  (geo/draw-line [[530 530 0] [570 570 0]]
                  :line-width 5
                  :color 0x00ff00))
 
@@ -52,7 +44,7 @@
 
 (doto hud-scene
   (.add hud-camera)
-  (.add score-label)
+  ;;(.add score-label)
   (.add some-line))
 
 (.appendChild dom (-> renderer .-domElement))
@@ -67,5 +59,7 @@
   (.render renderer hud-scene hud-camera)
   (aset renderer "autoClear" true)
   (animate))
+
+(overlay/init hud-scene)
 
 (render)
