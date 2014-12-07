@@ -5,7 +5,9 @@
             [defender-cljs.canvas.text :as text]
             [defender-cljs.canvas.geometry :as geo]
             [defender-cljs.overlay.core :as overlay]
-            [defender-cljs.canvas.sprite :as sprite]))
+            [defender-cljs.canvas.sprite :as sprite]
+            [defender-cljs.physics :as physics]
+            [defender-cljs.actor :as a]))
 
 (def dom (.getElementById js/document "app"))
 
