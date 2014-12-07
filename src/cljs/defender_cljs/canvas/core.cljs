@@ -4,7 +4,8 @@
             [defender-cljs.canvas.hud :as hud]
             [defender-cljs.canvas.text :as text]
             [defender-cljs.canvas.geometry :as geo]
-            [defender-cljs.overlay.core :as overlay]))
+            [defender-cljs.overlay.core :as overlay]
+            [defender-cljs.canvas.sprite :as sprite]))
 
 (def dom (.getElementById js/document "app"))
 
@@ -12,6 +13,8 @@
 (def height (.-clientHeight dom))
 
 (def renderer (THREE.WebGLRenderer.))
+;;(def renderer (THREE.CanvasRenderer.))
+
 (.setSize renderer width height)
 
 (def camera (cam/make-camera 0 1000 (* 1000 (/ 3 4)) 0))
@@ -22,11 +25,17 @@
 
 (def spinning-square (geo/square 200 200 200 200))
 
+(def ship (sprite/make-sprite "ship.png"))
+(obj/set-position! ship 500 500)
+
+(.log js/console ship)
+
 (doto main-scene
   (.add camera)
   (.add (geo/square 50 50 100 100 :color 0x330000))
   (.add (geo/square 50 100 100 100))
   (.add spinning-square)
+  (.add ship)
   )
 
 ;;(def score-label (text/create-label "score" {:size 20 :color 0xff00ff}))
@@ -40,13 +49,13 @@
                  :line-width 5
                  :color 0x00ff00))
 
-(.log js/console some-line)
-
 (doto hud-scene
   (.add hud-camera)
   ;;(.add score-label)
   (.add some-line))
 
+;;clear the inside
+(aset dom "innerHTML" "")
 (.appendChild dom (-> renderer .-domElement))
 
 (defn animate []
