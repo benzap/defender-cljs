@@ -6,19 +6,17 @@
 
 (defn create-actor
   "Creates an actor with all of the required attributes"
-  [obj & {:keys [name type]}]
-  (let [actor
-        {:entity obj
-         :name name
-         :type type
-         :physics
-         (atom {:velocity [0 0 0]
-                :acceleration [0 0 0]})
-         :collision
-         {:type "AABB"
-          :width 64
-          :height 64}}]
-    (swap! actor-list conj actor)))
+  [obj & {:keys [name type] :or {type "actor"}}]
+  {:entity obj
+   :name name
+   :type type
+   :physics
+   (atom {:velocity [0 0 0]
+          :acceleration [0 0 0]})
+   :collision
+   {:type "AABB"
+    :width 64
+    :height 64}})
 
 (defn get-position [actor]
   (let [entity-position (-> actor :entity .-position)]

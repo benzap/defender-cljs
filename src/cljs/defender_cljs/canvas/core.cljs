@@ -32,6 +32,16 @@
 
 (.log js/console ship)
 
+(def ship-actor
+  (a/create-actor
+   ship
+   :name "ship"
+   :type "ship"))
+
+(a/set-velocity! ship-actor [10 0 0])
+(a/set-acceleration! ship-actor [19.0 0 0])
+
+
 (doto main-scene
   (.add camera)
   (.add (geo/square 50 50 100 100 :color 0x330000))
@@ -40,12 +50,6 @@
   (.add ship)
   )
 
-;;(def score-label (text/create-label "score" {:size 20 :color 0xff00ff}))
-;;(obj/set-position! score-label 10 700)
-
-;;(text/set-label-text! score-label "002000000")
-;;(text/set-label-attrs! score-label {:size 40})
-
 (def some-line
   (geo/draw-line [[530 530 0] [570 570 0]]
                  :line-width 5
@@ -53,7 +57,6 @@
 
 (doto hud-scene
   (.add hud-camera)
-  ;;(.add score-label)
   (.add some-line))
 
 ;;clear the inside
@@ -61,7 +64,8 @@
 (.appendChild dom (-> renderer .-domElement))
 
 (defn animate []
-  (obj/rotate! spinning-square 0.01))
+  (obj/rotate! spinning-square 0.01)
+  (physics/update-actor-physics ship-actor (/ 1000 60)))
 
 (defn render []
   (.requestAnimationFrame js/window render)
