@@ -22,3 +22,14 @@
         position (a/set-position! actor new-position)
         
         ]))
+
+;;force generators
+
+;;Damping generator, which damps the velocity.
+(def damped-actors (atom []))
+(defn apply-damping-generator
+  "Takes an actor, and applies damping to the velocity"
+  [actor damping]
+  (let [velocity (a/get-velocity actor)]
+    (a/set-velocity! actor (map (partial * damping) velocity))))
+
