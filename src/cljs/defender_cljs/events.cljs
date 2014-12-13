@@ -53,7 +53,9 @@
 
 (on-keydown
  :right
- (.log js/console "test"))
+ (.log js/console "right down!"))
 
-(.log js/console "this was called")
+(on-keyup
+ :right
+ (.log js/console "right up!"))
 
