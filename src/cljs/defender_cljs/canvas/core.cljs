@@ -7,7 +7,8 @@
             [defender-cljs.overlay.core :as overlay]
             [defender-cljs.canvas.sprite :as sprite]
             [defender-cljs.physics :as physics]
-            [defender-cljs.actor :as a]))
+            [defender-cljs.actor :as a]
+            [defender-cljs.events :as e]))
 
 (def dom (.getElementById js/document "app"))
 
@@ -15,7 +16,6 @@
 (def height (.-clientHeight dom))
 
 (def renderer (THREE.WebGLRenderer.))
-;;(def renderer (THREE.CanvasRenderer.))
 
 (.setSize renderer width height)
 
