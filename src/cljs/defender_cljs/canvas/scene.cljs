@@ -24,3 +24,13 @@
 
 (defn remove-object! [scene obj]
   (.remove (-> scene :scene-instance obj)))
+
+;;
+;; Scenes.
+;;
+
+;; Main scene which moves across the screen
+(def main (create-scene))
+
+;; Static scene for displaying HUD elements
+(def hud (create-scene))
