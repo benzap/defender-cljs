@@ -36,3 +36,4 @@
   - J :: Thrust
   - K :: Fire
   - B :: Bomb
+  - G :: Hyperspace

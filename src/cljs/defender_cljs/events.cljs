@@ -15,7 +15,9 @@
    :i 105
    :j 106
    :k 107
-   :l 108})
+   :l 108
+   :b 66
+   :g 71})
 
 (def keys-pressed (atom #{}))
 

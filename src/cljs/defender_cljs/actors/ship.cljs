@@ -1,8 +1,10 @@
 (ns defender-cljs.actors.ship
   (:require [defender-cljs.actor :as a]
+            [defender-cljs.canvas.object :as obj]
             [defender-cljs.canvas.sprite :as sprite]
             [defender-cljs.physics :as physics]
-            [defender-cljs.events :as events])
+            [defender-cljs.events :as events]
+            [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (def damping 0.7)
@@ -20,6 +22,9 @@
 (physics/add-damped-actor! ship damping)
 
 
+;;event listeners
+
+;;ship movement
 
 (on-keydown
  :left
@@ -28,8 +33,6 @@
 (on-keyup
  :left
  (a/update-acceleration! ship [ship-thrust-speed 0 0]))
-
-;;event listeners
 
 (on-keydown
  :right
@@ -56,3 +59,7 @@
  :down
  (let [[x _ z] (a/get-velocity ship)]
    (a/set-velocity! ship [x 0 z])))
+
+
+
+(obj/scale! (-> ship :entity) -1 1)
