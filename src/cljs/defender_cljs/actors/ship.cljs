@@ -17,7 +17,7 @@
    :name "ship"
    :type "ship"))
 
-(physics/add-damped-actor! ship 0.8)
+(physics/add-damped-actor! ship damping)
 
 
 
