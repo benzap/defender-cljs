@@ -1,5 +1,6 @@
 (ns defender-cljs.physics
-  (:require [defender-cljs.actor :as a]))
+  (:require [defender-cljs.actor :as a]
+            [defender-cljs.canvas.system :as system]))
 
 (defn update-actor-physics [actor delta]
   (let [delta-sec (/ delta 1000)
@@ -29,7 +30,22 @@
 (def damped-actors (atom []))
 (defn apply-damping-generator
   "Takes an actor, and applies damping to the velocity"
-  [actor damping]
+  [actor damping delta]
   (let [velocity (a/get-velocity actor)]
-    (a/set-velocity! actor (map (partial * damping) velocity))))
+    (a/set-velocity! actor (map (fn [x]
+                                  (* x (.pow js/Math damping delta))) velocity))))
 
+(defn add-damped-actor! [actor damping]
+  (swap! damped-actors conj [actor damping]))
+
+(defrecord DampingGenerator []
+  system/System
+  (run [_ props]
+    (doseq [pair @damped-actors]
+      (let [actor (first pair)
+            damping (second pair)
+            delta (or (:delta props) (/ 1. 60.))]
+        (.log js/console damping delta)
+        (apply-damping-generator actor damping delta)))))
+
+(system/add-system! :damping-generator (DampingGenerator.))

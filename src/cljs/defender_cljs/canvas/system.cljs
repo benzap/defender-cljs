@@ -2,7 +2,7 @@
   "handles the render loop, and lets you pass in your own system logic")
 
 (defprotocol System
-  (run [this]))
+  (run [this props]))
 
 (def systems (atom {}))
 
@@ -12,13 +12,13 @@
 (defn remove-system! [name]
   (swap! systems dissoc name))
 
-(defn run-systems []
+(defn run-systems [& [props]]
   (doseq [system @systems]
-    (run (second system))))
+    (run (second system) (or props {}))))
 
 (defrecord Test [msg]
   System
-  (run [_]
+  (run [_ props]
     (.log js/console msg)))
 
 ;;(add-system! "test" (Test. "Hello from Test"))

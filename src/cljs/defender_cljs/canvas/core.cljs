@@ -39,6 +39,8 @@
    :name "ship"
    :type "ship"))
 
+(physics/add-damped-actor! ship-actor 0.8)
+
 (.log js/console (clj->js ship-actor))
 
 (a/set-velocity! ship-actor [10 0 0])
@@ -65,7 +67,7 @@
 (defn animate []
   (obj/rotate! spinning-square 0.01)
   (physics/update-actor-physics ship-actor (/ 1000 60))
-  (system/run-systems))
+  (system/run-systems {:delta (/ 1 60.)}))
 
 (defn render []
   (.requestAnimationFrame js/window render)
