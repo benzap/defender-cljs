@@ -11,6 +11,7 @@
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
             [defender-cljs.events :as e])
+  (:use [defender-cljs.actors.ship :only [ship]])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (def dom (.getElementById js/document "app"))
@@ -30,21 +31,9 @@
 
 (def spinning-square (geo/square 200 200 200 200))
 
-(def ship (sprite/make-sprite "ship.png"))
-(obj/set-position! ship 500 500)
-
-(def ship-actor
-  (a/create-actor
-   ship
-   :name "ship"
-   :type "ship"))
-
-(physics/add-damped-actor! ship-actor 0.8)
-
-(.log js/console (clj->js ship-actor))
-
-(a/set-velocity! ship-actor [10 0 0])
-(a/set-acceleration! ship-actor [19.0 0 0])
+(.log js/console (clj->js ship))
+(a/set-position! ship [500 500 0])
+(physics/add-damped-actor! ship 0.8)
 
 ;;populate the main scene
 
@@ -53,7 +42,7 @@
   (scene/add-object! (geo/square 50 50 100 100 :color 0x330000))
   (scene/add-object! (geo/square 50 100 100 100))
   (scene/add-object! spinning-square)
-  (scene/add-actor! ship-actor))
+  (scene/add-actor! ship))
 
 ;;populate the hud scene
 
@@ -66,15 +55,13 @@
 
 (defn animate []
   (obj/rotate! spinning-square 0.01)
-  (physics/update-actor-physics ship-actor (/ 1000 60))
+  (physics/update-actor-physics ship (/ 1000 60.))
   (system/run-systems {:delta (/ 1 60.)}))
 
 (defn render []
   (.requestAnimationFrame js/window render)
   (.render renderer (-> scene/main :scene-instance) camera)
-  ;;(.render renderer main-scene camera)
   (aset renderer "autoClear" false)
-  ;;(.render renderer hud-scene hud-camera)
   (.render renderer (-> scene/hud :scene-instance) hud-camera)
   (aset renderer "autoClear" true)
   (animate))

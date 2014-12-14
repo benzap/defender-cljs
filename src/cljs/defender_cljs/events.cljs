@@ -47,15 +47,15 @@
               (callback))))]
     (.addEventListener js/document "keyup" callback-wrapper)))
 
-(set-on-keydown :left
+#_(set-on-keydown :left
                 (fn []
                   (.log js/console "left!")))
 
-(on-keydown
+#_(on-keydown
  :right
  (.log js/console "right down!"))
 
-(on-keyup
+#_(on-keyup
  :right
  (.log js/console "right up!"))
 

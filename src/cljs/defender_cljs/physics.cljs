@@ -45,7 +45,79 @@
       (let [actor (first pair)
             damping (second pair)
             delta (or (:delta props) (/ 1. 60.))]
-        (.log js/console damping delta)
         (apply-damping-generator actor damping delta)))))
 
 (system/add-system! :damping-generator (DampingGenerator.))
+
+;;Spring generator
+(def springed-actors (atom []))
+
+(defn add-springy-actor!
+  "Registers an actor to be affected by springy behaviour
+  
+  Optional Arguments:
+
+  spring-constant -- defines the spring constant, k [default: 5]
+
+  spring-length -- defines the length of the spring [default: 1]
+
+  lock-x-axis -- if true, prevents the spring from 
+                 affecting the x axis [default: false]
+
+  lock-y-axis -- if true, prevents the spring from 
+                 affecting the y axis [default: false]
+
+  type -- defines more specialized spring behaviour. types are discussed below
+          [default: :basic]
+
+  anchor-position -- position of the anchor, that the spring follows
+
+  Spring types: 
+  
+  :basic -- provides basic spring behaviour, for pushing and pulling
+            from a fixed point based on the spring-length
+  "
+  [actor & {:keys [
+                   type
+                   spring-constant
+                   spring-length
+                   lock-x-axis
+                   lock-y-axis
+                   anchor-position
+                   ]
+            :or {type :basic
+                 spring-constant 5
+                 spring-length 1
+                 lock-x-axis false
+                 lock-y-axis false
+                 anchor-position
+                 (take 2 (a/get-position actor))}}]
+  (let [spring-reg
+        {:actor actor
+         :type type
+         :spring-constant spring-constant
+         :spring-length spring-length
+         :lock-x-axis lock-x-axis
+         :lock-y-axis lock-y-axis
+         :anchor-position (atom anchor-position)}]
+    (swap! springed-actors conj spring-reg)
+    spring-reg))
+
+(defn update-spring-anchor! [spring-reg & [x y]]
+  (reset! (-> spring-reg :anchor-position) [x y]))
+
+(defmulti apply-spring-generator
+  (fn [spring-reg props]
+    (-> spring-reg :type)))
+
+(defmethod apply-spring-generator :basic
+  [spring-reg props]
+  (let [delta (props :delta)]))
+
+(defrecord SpringForceGenerator []
+  system/System
+  (run [_ props]
+    (doseq [spring-reg @springed-actors]
+      (apply-spring-generator spring-reg props))))
+
+(system/add-system! :spring-generator (SpringForceGenerator.))

@@ -12,7 +12,8 @@
    :type type
    :physics
    (atom {:velocity [0 0 0]
-          :acceleration [0 0 0]})
+          :acceleration [0 0 0]
+          :inverse-mass 1})
    :collision
    {:type "AABB"
     :width 64
@@ -39,6 +40,12 @@
   (swap! (-> actor :physics) assoc :velocity [x y (or z 0)])
   [x y z])
 
+(defn update-velocity!
+  "translates the current velocity value"
+  [actor vel-inc]
+  (let [vel (get-velocity actor)]
+    (set-velocity! actor (map + vel vel-inc))))
+
 (defn get-acceleration [actor]
   (let [physics @(-> actor :physics)]
     (physics :acceleration)))
@@ -46,3 +53,24 @@
 (defn set-acceleration! [actor [x y z]]
   (swap! (-> actor :physics) assoc :acceleration [x y (or z 0)])
   [x y z])
+
+(defn update-acceleration!
+  "translates the current acceleration value"
+  [actor acc-inc]
+  (let [acc (get-acceleration actor)]
+    (set-acceleration! actor (map + acc acc-inc))))
+
+(defn get-inverse-mass [actor]
+  (let [physics @(-> actor :physics)]
+    (physics :inverse-mass)))
+
+(defn set-inverse-mass! [actor inverse-mass]
+  (swap! (-> actor :physics) assoc :inverse-mass inverse-mass))
+
+(defn get-mass [actor]
+  (let [physics @(-> actor :physics)
+        inverse-mass (physics :inverse-mass)]
+    (/ 1 inverse-mass)))
+
+(defn set-mass! [actor mass]
+  (swap! (-> actor :physics) assoc :inverse-mass (/ 1 mass)))
