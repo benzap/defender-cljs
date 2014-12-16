@@ -31,9 +31,7 @@
 
 (def spinning-square (geo/square 200 200 200 200))
 
-(.log js/console (clj->js ship))
 (a/set-position! ship [500 500 0])
-(physics/add-damped-actor! ship 0.8)
 
 ;;populate the main scene
 
