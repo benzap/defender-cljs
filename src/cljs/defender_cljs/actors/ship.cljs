@@ -8,9 +8,9 @@
             [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
-(def damping 0.50)
-(def ship-thrust-speed 2000.0)
-(def ship-elevation-speed 900.0)
+(def damping 0.20)
+(def ship-thrust-speed 4000.0)
+(def ship-elevation-speed 800.0)
 
 (def ship-sprite (sprite/make-sprite "ship.png"))
 
