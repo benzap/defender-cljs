@@ -20,14 +20,7 @@
 (def height (.-clientHeight dom))
 
 (def renderer (THREE.WebGLRenderer.))
-
 (.setSize renderer width height)
-
-(def camera (cam/make-camera 0 1000 (* 1000 (/ 3 4)) 0))
-(def hud-camera (cam/make-camera 0 1000 (* 1000 (/ 3 4)) 0))
-
-(def main-scene (THREE.Scene.))
-(def hud-scene (THREE.Scene.))
 
 (def spinning-square (geo/square 200 200 200 200))
 
@@ -36,7 +29,7 @@
 ;;populate the main scene
 
 (doto scene/main
-  (scene/add-object! camera)
+  (scene/add-object! cam/main-camera)
   (scene/add-object! (geo/square 50 50 100 100 :color 0x330000))
   (scene/add-object! (geo/square 50 100 100 100))
   (scene/add-object! spinning-square)
@@ -45,7 +38,7 @@
 ;;populate the hud scene
 
 (doto scene/hud
-  (scene/add-object! hud-camera))
+  (scene/add-object! cam/hud-camera))
 
 ;;clear the inside
 (aset dom "innerHTML" "")
@@ -58,9 +51,9 @@
 
 (defn render []
   (.requestAnimationFrame js/window render)
-  (.render renderer (-> scene/main :scene-instance) camera)
+  (.render renderer (-> scene/main :scene-instance) cam/main-camera)
   (aset renderer "autoClear" false)
-  (.render renderer (-> scene/hud :scene-instance) hud-camera)
+  (.render renderer (-> scene/hud :scene-instance) cam/hud-camera)
   (aset renderer "autoClear" true)
   (animate))
 
