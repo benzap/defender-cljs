@@ -3,6 +3,7 @@
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.object :as obj]
             [defender-cljs.canvas.sprite :as sprite]
+            [defender-cljs.canvas.system :as system]
             [defender-cljs.physics :as physics]
             [defender-cljs.events :as events]
             [defender-cljs.constants :as c])
@@ -20,7 +21,7 @@
    :name "ship"
    :type "ship"))
 
-(physics/add-damped-actor! ship damping)
+(physics/add-damping! ship damping)
 
 (def ship-direction (atom :left))
 (defn switch-ship-direction []
@@ -87,3 +88,16 @@
 (on-keydown
  (c/keyboard-config :hyperspace)
  (log "Hyperspace!"))
+
+;;spring tests
+
+;;tests
+(def ship-spring (physics/add-spring! ship))
+
+(log ship-spring)
+
+#_(system/add-system!
+ :test-system
+ (reify system/System
+   (run [_ props]
+     (a/add-force! ship [10 0 0]))))

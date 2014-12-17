@@ -6,8 +6,19 @@
   (let [delta-sec (/ delta 1000)
         delta-func (partial * delta-sec)
 
-        ;;get our acceleration and get the change in velocity
+        ;;apply our force generator to our acceleration
+        force-accum (a/get-force-accumulator actor)
+        inverse-mass (a/get-inverse-mass actor)
+        delta-acceleration (map (partial * inverse-mass) force-accum)
+        
+        ;;get our acceleration
         acceleration (a/get-acceleration actor)
+
+        ;;apply our force accumulator to the acceleration
+        acceleration
+        (a/set-acceleration! actor (map + delta-acceleration acceleration))
+
+        ;;change in velocity due to acceleration
         delta-velocity (map delta-func acceleration)
 
         velocity (a/get-velocity actor)
@@ -22,7 +33,9 @@
         new-position (map + delta-position current-position)
         position (a/set-position! actor new-position)
         
-        ]))
+        ]
+    ;;clear our force accumulator for the next iteration
+    (a/set-force-accumulator! actor [0 0 0])))
 
 ;;force generators
 
@@ -35,7 +48,7 @@
     (a/set-velocity! actor (map (fn [x]
                                   (* x (.pow js/Math damping delta))) velocity))))
 
-(defn add-damped-actor! [actor damping]
+(defn add-damping! [actor damping]
   (swap! damped-actors conj [actor damping]))
 
 (defrecord DampingGenerator []
@@ -52,7 +65,7 @@
 ;;Spring generator
 (def springed-actors (atom []))
 
-(defn add-springy-actor!
+(defn add-spring!
   "Registers an actor to be affected by springy behaviour
   
   Optional Arguments:
@@ -121,3 +134,5 @@
       (apply-spring-generator spring-reg props))))
 
 (system/add-system! :spring-force-generator (SpringForceGenerator.))
+
+

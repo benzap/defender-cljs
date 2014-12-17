@@ -11,7 +11,8 @@
    :name name
    :type type
    :physics
-   (atom {:velocity [0 0 0]
+   (atom {:force-accumulator [0 0 0]
+          :velocity [0 0 0]
           :acceleration [0 0 0]
           :inverse-mass 1})
    :collision
@@ -74,3 +75,15 @@
 
 (defn set-mass! [actor mass]
   (swap! (-> actor :physics) assoc :inverse-mass (/ 1 mass)))
+
+(defn get-force-accumulator [actor]
+  (let [physics @(-> actor :physics)]
+    (physics :force-accumulator)))
+
+(defn set-force-accumulator! [actor [x y z]]
+  (swap! (-> actor :physics) assoc :force-accumulator [x y (or z 0)])
+  [x y z])
+
+(defn add-force! [actor force]
+  (let [current-force (get-force-accumulator actor)]
+    (set-force-accumulator! actor (map + force current-force))))
