@@ -120,4 +120,4 @@
     (doseq [spring-reg @springed-actors]
       (apply-spring-generator spring-reg props))))
 
-(system/add-system! :spring-generator (SpringForceGenerator.))
+(system/add-system! :spring-force-generator (SpringForceGenerator.))

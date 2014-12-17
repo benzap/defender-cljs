@@ -29,6 +29,6 @@
    :move-down :s
    :thrust :j
    :fire :k
-   :bomb :b
+   :bomb :l
    :switch-directions :space
    :hyperspace :g})
