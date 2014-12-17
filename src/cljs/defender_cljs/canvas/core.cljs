@@ -29,7 +29,7 @@
 ;;populate the main scene
 
 (doto scene/main
-  (scene/add-object! cam/main-camera)
+  (scene/add-actor! cam/main-camera)
   (scene/add-object! (geo/square 50 50 100 100 :color 0x330000))
   (scene/add-object! (geo/square 50 100 100 100))
   (scene/add-object! spinning-square)
@@ -38,7 +38,7 @@
 ;;populate the hud scene
 
 (doto scene/hud
-  (scene/add-object! cam/hud-camera))
+  (scene/add-actor! cam/hud-camera))
 
 ;;clear the inside
 (aset dom "innerHTML" "")
@@ -47,13 +47,14 @@
 (defn animate []
   (obj/rotate! spinning-square 0.01)
   (physics/update-actor-physics ship (/ 1000 60.))
+  (physics/update-actor-physics cam/main-camera (/ 1000 60.))
   (system/run-systems {:delta (/ 1 60.)}))
 
 (defn render []
   (.requestAnimationFrame js/window render)
-  (.render renderer (-> scene/main :scene-instance) cam/main-camera)
+  (.render renderer (-> scene/main :scene-instance) (:entity cam/main-camera))
   (aset renderer "autoClear" false)
-  (.render renderer (-> scene/hud :scene-instance) cam/hud-camera)
+  (.render renderer (-> scene/hud :scene-instance) (:entity cam/hud-camera))
   (aset renderer "autoClear" true)
   (animate))
 

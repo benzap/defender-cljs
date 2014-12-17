@@ -43,22 +43,6 @@
 ;;ship movement
 
 (on-keydown
- :left
- (a/update-acceleration! ship [(- ship-thrust-speed) 0 0]))
-
-(on-keyup
- :left
- (a/update-acceleration! ship [ship-thrust-speed 0 0]))
-
-(on-keydown
- :right
- (a/update-acceleration! ship [ship-thrust-speed 0 0]))
-
-(on-keyup
- :right
- (a/update-acceleration! ship [(- ship-thrust-speed) 0 0]))
-
-(on-keydown
  (c/keyboard-config :thrust)
  (thrust-ship))
 
