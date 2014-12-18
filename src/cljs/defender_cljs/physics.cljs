@@ -1,6 +1,6 @@
 (ns defender-cljs.physics
   (:use [defender-cljs.utils :only [log]]
-        [defender-cljs.vector :only [mag norm]])
+        [defender-cljs.vector :only [mag norm clamp]])
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.system :as system]))
 
@@ -12,7 +12,7 @@
 
         position (a/get-position actor)
         position (a/set-position! actor (map + delta-velocity position))
-
+        
         acceleration (a/get-acceleration actor)
         force-accum (a/get-force-accumulator actor)
         inverse-mass (a/get-inverse-mass actor)
@@ -27,6 +27,7 @@
         delta-damping (Math/pow damping delta)
         
         velocity (a/set-velocity! actor (map #(* delta-damping %) velocity))
+        velocity (a/set-velocity! actor (clamp velocity 1e10))
         ]
     ;;clear our force accumulator for the next iteration
     (a/set-force-accumulator! actor [0 0 0])))
@@ -95,6 +96,8 @@
   
   :basic -- provides basic spring behaviour, for pushing and pulling
             from a fixed point based on the spring-length
+  :basic-exponential -- basic spring behaviour, with exponential curve
+
   "
   [actor & {:keys [
                    type
@@ -150,6 +153,9 @@
         
         final-force
         (map (partial * (- force-spring)) (norm force-vector))
+
+        ;;clamp the final force, so it doesn't get out of control
+        final-force (clamp final-force 1e5)
         ]
     final-force))
 
@@ -162,6 +168,12 @@
   (let [actor (:actor spring-reg)
         spring-force (get-spring-force spring-reg)]
     (a/add-force! actor spring-force)))
+
+(defmethod apply-spring-generator :basic-exponential
+    [spring-reg props]
+  (let [actor (:actor spring-reg)
+        spring-force (get-spring-force spring-reg)]
+    (a/add-force! actor (map * spring-force spring-force))))
 
 (defrecord SpringForceGenerator []
   system/System

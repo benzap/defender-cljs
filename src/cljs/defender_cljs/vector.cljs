@@ -12,3 +12,13 @@
     (if (not= magnitude 0)
       (map #(/ % magnitude) v)
       (map (fn [_] 0) v))))
+
+(defn clamp [v max-value]
+  (map
+   (fn [elem]
+     (cond
+      (.isNaN js/window elem) max-value
+      (>= elem max-value) max-value
+      (<= elem (- max-value)) (- max-value)
+      :else elem))
+      v))

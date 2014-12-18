@@ -4,7 +4,7 @@
             [defender-cljs.actor :as a]
             [defender-cljs.physics :as physics]
             [defender-cljs.canvas.system :as system]
-            [defender-cljs.actors.ship :refer [ship]])
+            [defender-cljs.actors.ship :refer [ship ship-direction]])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (defonce default-camera-near -100)
@@ -39,10 +39,13 @@
  :right
  (a/set-velocity! main-camera [0 0 0]))
 
+(a/set-mass! main-camera 5.0)
 (physics/add-drag! main-camera :k1 0.5 :k2 0.1)
+
 
 (def camera-spring
   (physics/add-spring! main-camera
+                       ;;:type :basic-exponential
                        :spring-length 0
                        :spring-constant 100
                        :lock-y-axis true))
@@ -50,7 +53,12 @@
 (defn update-camera-position []
   (let [ship-position (a/get-position ship)
         [shipx _ _] ship-position
-        pos (+ shipx -500)]
+        left-pos (* c/view-width (/ 1 5))
+        right-pos (- c/view-width left-pos)
+        pos (condp = @ship-direction
+              :left left-pos
+              :right right-pos)
+        pos (+ shipx (- pos))]
     
     (physics/update-spring-anchor! camera-spring pos 0)))
 
