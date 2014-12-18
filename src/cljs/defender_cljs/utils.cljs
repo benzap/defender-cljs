@@ -1,5 +1,6 @@
 (ns defender-cljs.utils
   "")
 
-(defn log [msg]
-  (.log js/console (clj->js msg)))
+(defn log [& msgs]
+  (.apply (.-log js/console) js/console (clj->js (map clj->js msgs)))
+  (last msgs))

@@ -1,4 +1,5 @@
 (ns defender-cljs.physics
+  (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.system :as system]))
 
@@ -70,7 +71,7 @@
   
   Optional Arguments:
 
-  spring-constant -- defines the spring constant, k [default: 5]
+  spring-constant -- defines the spring constant, k [default: 0.1]
 
   spring-length -- defines the length of the spring [default: 1]
 
@@ -99,12 +100,12 @@
                    anchor-position
                    ]
             :or {type :basic
-                 spring-constant 5
+                 spring-constant 0.1
                  spring-length 1
                  lock-x-axis false
                  lock-y-axis false
                  anchor-position
-                 (take 2 (a/get-position actor))}}]
+                 (a/get-position actor)}}]
   (let [spring-reg
         {:actor actor
          :type type
@@ -116,8 +117,40 @@
     (swap! springed-actors conj spring-reg)
     spring-reg))
 
-(defn update-spring-anchor! [spring-reg & [x y]]
-  (reset! (-> spring-reg :anchor-position) [x y]))
+(defn update-spring-anchor! [spring-reg & [x y z]]
+  (reset! (-> spring-reg :anchor-position) [x y (or z 0)]))
+
+(defn get-spring-force [spring-reg]
+  (let [actor (:actor spring-reg)
+
+        position (a/get-position actor)
+        anchor-position @(:anchor-position spring-reg)
+        spring-length (:spring-length spring-reg)
+        spring-constant (:spring-constant spring-reg)
+        
+        force-vector (map - position anchor-position)
+        
+        force-magnitude
+        (->> force-vector
+             (map #(Math/pow % 2))
+             (reduce +)
+             (Math/sqrt))
+        
+        force-spring
+        (->> force-magnitude
+             (+ (- spring-length))
+             (* spring-constant))
+        
+        force-normal
+        (if (not= force-magnitude 0)
+          (map #(/ % force-magnitude) force-vector)
+          [0.001 0.001 0])
+        
+        final-force
+        (map (partial * (- force-spring)) force-normal)
+        
+        ]
+    final-force))
 
 (defmulti apply-spring-generator
   (fn [spring-reg props]
@@ -125,7 +158,9 @@
 
 (defmethod apply-spring-generator :basic
   [spring-reg props]
-  (let [delta (props :delta)]))
+  (let [actor (:actor spring-reg)
+        spring-force (get-spring-force spring-reg)]
+    (a/add-force! actor spring-force)))
 
 (defrecord SpringForceGenerator []
   system/System
