@@ -97,15 +97,15 @@
 ;;spring tests
 
 ;;tests
-(def ship-spring (physics/add-spring!
+#_(def ship-spring (physics/add-spring!
                   ship
                   :spring-constant 10
                   :spring-length 0
                   :lock-y-axis true))
 
-(physics/update-spring-anchor! ship-spring 500 500 0)
+#_(physics/update-spring-anchor! ship-spring 500 500 0)
 
-(log ship-spring)
+#_(log ship-spring)
 
 #_(system/add-system!
  :test-system
