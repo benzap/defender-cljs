@@ -6,7 +6,8 @@
 
 (defn create-actor
   "Creates an actor with all of the required attributes"
-  [obj & {:keys [name type] :or {type "actor"}}]
+  [obj & {:keys [name type damping inverse-mass]
+          :or {type "actor" damping 1.0 inverse-mass 1.0}}]
   {:entity obj
    :name name
    :type type
@@ -14,7 +15,8 @@
    (atom {:force-accumulator [0 0 0]
           :velocity [0 0 0]
           :acceleration [0 0 0]
-          :inverse-mass 1})
+          :inverse-mass inverse-mass
+          :damping damping})
    :collision
    {:type "AABB"
     :width 64
@@ -75,6 +77,10 @@
 
 (defn set-mass! [actor mass]
   (swap! (-> actor :physics) assoc :inverse-mass (/ 1 mass)))
+
+(defn get-damping [actor]
+  (let [physics @(-> actor :physics)]
+    (:damping physics)))
 
 (defn get-force-accumulator [actor]
   (let [physics @(-> actor :physics)]

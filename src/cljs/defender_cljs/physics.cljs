@@ -33,37 +33,64 @@
         current-position (a/get-position actor)
         new-position (map + delta-position current-position)
         position (a/set-position! actor new-position)
+
+        ;;apply damping
+        damping (a/get-damping actor)
+        velocity (a/set-velocity!
+                  actor
+                  (map (fn [x]
+                         (* x (.pow js/Math damping delta-sec))) velocity))
         
         ]
     ;;clear our force accumulator for the next iteration
     (a/set-force-accumulator! actor [0 0 0])))
 
-;;force generators
 
-;;Damping generator, which damps the velocity.
-(def damped-actors (atom []))
-(defn apply-damping-generator
-  "Takes an actor, and applies damping to the velocity"
-  [actor damping delta]
-  (let [velocity (a/get-velocity actor)]
-    (a/set-velocity! actor (map (fn [x]
-                                  (* x (.pow js/Math damping delta))) velocity))))
+;;Drag Generator
+(def dragged-actors (atom []))
 
-(defn add-damping! [actor damping]
-  (swap! damped-actors conj [actor damping]))
+(defn add-drag!
+  "Based on the drag coefficient V(normal) ( k1 |V| + k2 |V|^2 )"
+  [actor &
+   {:keys [k1 k2]
+    :or {k1 1.0 k2 1.0}}]
+  (swap! dragged-actors conj {:actor actor :k1 k1 :k2 k2}))
 
-(defrecord DampingGenerator []
-  system/System
-  (run [_ props]
-    (doseq [pair @damped-actors]
-      (let [actor (first pair)
-            damping (second pair)
-            delta (or (:delta props) (/ 1. 60.))]
-        (apply-damping-generator actor damping delta)))))
+(defn apply-drag-generator [drag-reg]
+  (let [actor (:actor drag-reg)
+        k1 (:k1 drag-reg)
+        k2 (:k2 drag-reg)
 
-(system/add-system! :damping-generator (DampingGenerator.))
+        velocity (a/get-velocity actor)
 
-;;Spring generator
+        velocity-magnitude
+        (->> velocity
+             (map #(* % %))
+             (reduce +)
+             (Math/sqrt))
+        
+        drag-speed
+        (+
+         (* k1 velocity-magnitude)
+         (* k2 k2 velocity-magnitude))
+        
+        velocity-normal
+        (if (not= velocity-magnitude 0)
+          (map #(/ % velocity-magnitude) velocity)
+          [0 0 0])
+        
+        force (map #(* (- drag-speed) %) velocity-normal)
+        ]
+    (a/add-force! actor force)))
+
+(system/add-system!
+ :drag-force-generator
+ (reify system/System
+   (run [_ props]
+     (doseq [dragged @dragged-actors]
+       (apply-drag-generator dragged)))))
+
+;;Spring Force Generator
 (def springed-actors (atom []))
 
 (defn add-spring!

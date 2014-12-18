@@ -9,7 +9,8 @@
             [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
-(def damping 0.20)
+(def mass 1)
+(def damping 0.9)
 (def ship-thrust-speed 4000.0)
 (def ship-elevation-speed 800.0)
 
@@ -19,9 +20,9 @@
   (a/create-actor
    ship-sprite
    :name "ship"
-   :type "ship"))
-
-(physics/add-damping! ship damping)
+   :type "ship"
+   :damping damping
+   :inverse-mass (/ 1 mass)))
 
 (def ship-direction (atom :left))
 (defn switch-ship-direction []
@@ -89,15 +90,17 @@
  (c/keyboard-config :hyperspace)
  (log "Hyperspace!"))
 
-;;spring tests
+;;drag tests
 
-(a/set-mass! ship 1)
+(physics/add-drag! ship :k1 0.5 :k2 0.1)
+
+;;spring tests
 
 ;;tests
 (def ship-spring (physics/add-spring!
                   ship
                   :spring-constant 0.1
-                  :spring-length 200))
+                  :spring-length 100))
 
 (physics/update-spring-anchor! ship-spring 500 500 0)
 
