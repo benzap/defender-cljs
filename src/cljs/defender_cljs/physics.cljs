@@ -1,5 +1,6 @@
 (ns defender-cljs.physics
-  (:use [defender-cljs.utils :only [log]])
+  (:use [defender-cljs.utils :only [log]]
+        [defender-cljs.vector :only [mag norm]])
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.system :as system]))
 
@@ -10,7 +11,7 @@
         ;;apply our force generator to our acceleration
         force-accum (a/get-force-accumulator actor)
         inverse-mass (a/get-inverse-mass actor)
-        delta-acceleration (map (partial * inverse-mass) force-accum)
+        delta-acceleration (map #(* % inverse-mass) force-accum)
         
         ;;get our acceleration
         acceleration (a/get-acceleration actor)
@@ -63,23 +64,17 @@
 
         velocity (a/get-velocity actor)
 
-        velocity-magnitude
-        (->> velocity
-             (map #(* % %))
-             (reduce +)
-             (Math/sqrt))
+        velocity-magnitude (mag velocity)
         
         drag-speed
         (+
          (* k1 velocity-magnitude)
-         (* k2 k2 velocity-magnitude))
+         (* k2 velocity-magnitude velocity-magnitude))
         
-        velocity-normal
-        (if (not= velocity-magnitude 0)
-          (map #(/ % velocity-magnitude) velocity)
-          [0 0 0])
+        velocity-normal (norm velocity)
         
         force (map #(* (- drag-speed) %) velocity-normal)
+        
         ]
     (a/add-force! actor force)))
 

@@ -92,21 +92,21 @@
 
 ;;drag tests
 
-(physics/add-drag! ship :k1 0.5 :k2 0.1)
+(physics/add-drag! ship :k1 0.1 :k2 0.0)
 
 ;;spring tests
 
 ;;tests
-(def ship-spring (physics/add-spring!
+#_(def ship-spring (physics/add-spring!
                   ship
-                  :spring-constant 0.1
+                  :spring-constant 1
                   :spring-length 100))
 
-(physics/update-spring-anchor! ship-spring 500 500 0)
+#_(physics/update-spring-anchor! ship-spring 500 500 0)
 
-(log ship-spring)
+#_(log ship-spring)
 
-#_(system/add-system!
+(system/add-system!
  :test-system
  (reify system/System
    (run [_ props]
