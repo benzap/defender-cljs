@@ -57,6 +57,7 @@
          (* k2 velocity-mag velocity-mag))
         
         force (map #(* (- drag-speed) %) (norm velocity))
+        
         ]
     (a/add-force! actor force)))
 
@@ -131,28 +132,24 @@
         anchor-position @(:anchor-position spring-reg)
         spring-length (:spring-length spring-reg)
         spring-constant (:spring-constant spring-reg)
+
+        lock-x-axis (:lock-x-axis spring-reg)
+        lock-y-axis (:lock-y-axis spring-reg)
         
-        force-vector (map - position anchor-position)
-        
-        force-magnitude
-        (->> force-vector
-             (map #(Math/pow % 2))
-             (reduce +)
-             (Math/sqrt))
+        [fx fy fz] (map - position anchor-position)
+
+        force-vector
+        [(if lock-x-axis 0 fx)
+         (if lock-y-axis 0 fy)
+         fz]
         
         force-spring
-        (->> force-magnitude
+        (->> (mag force-vector)
              (+ (- spring-length))
              (* spring-constant))
         
-        force-normal
-        (if (not= force-magnitude 0)
-          (map #(/ % force-magnitude) force-vector)
-          [0.001 0.001 0])
-        
         final-force
-        (map (partial * (- force-spring)) force-normal)
-        
+        (map (partial * (- force-spring)) (norm force-vector))
         ]
     final-force))
 

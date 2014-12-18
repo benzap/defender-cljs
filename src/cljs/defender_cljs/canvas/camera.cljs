@@ -1,7 +1,9 @@
 (ns defender-cljs.canvas.camera
   (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.constants :as c]
-            [defender-cljs.actor :as a])
+            [defender-cljs.actor :as a]
+            [defender-cljs.physics :as physics]
+            [defender-cljs.canvas.system :as system])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (defonce default-camera-near -100)
@@ -35,3 +37,11 @@
 (on-keyup
  :right
  (a/set-velocity! main-camera [0 0 0]))
+
+;;system for tracking and re-adjusting the anchor
+(system/add-system!
+ :camera-tracking
+ (reify
+   system/System
+   (run [_ props]
+     )))
