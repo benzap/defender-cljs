@@ -11,4 +11,4 @@
   (let [magnitude (mag v)]
     (if (not= magnitude 0)
       (map #(/ % magnitude) v)
-      (map #(0) v))))
+      (map (fn [_] 0) v))))

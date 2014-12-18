@@ -10,7 +10,7 @@
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (def mass 1)
-(def damping 0.9)
+(def damping 1.0)
 (def ship-thrust-speed 4000.0)
 (def ship-elevation-speed 800.0)
 
@@ -92,21 +92,21 @@
 
 ;;drag tests
 
-(physics/add-drag! ship :k1 0.1 :k2 0.0)
+(physics/add-drag! ship :k1 0.5 :k2 0.00)
 
 ;;spring tests
 
 ;;tests
-#_(def ship-spring (physics/add-spring!
+(def ship-spring (physics/add-spring!
                   ship
-                  :spring-constant 1
-                  :spring-length 100))
+                  :spring-constant 10
+                  :spring-length 0))
 
-#_(physics/update-spring-anchor! ship-spring 500 500 0)
+(physics/update-spring-anchor! ship-spring 500 500 0)
 
-#_(log ship-spring)
+(log ship-spring)
 
-(system/add-system!
+#_(system/add-system!
  :test-system
  (reify system/System
    (run [_ props]

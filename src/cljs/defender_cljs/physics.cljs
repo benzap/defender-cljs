@@ -5,43 +5,28 @@
             [defender-cljs.canvas.system :as system]))
 
 (defn update-actor-physics [actor delta]
-  (let [delta-sec (/ delta 1000)
-        delta-func (partial * delta-sec)
-
-        ;;apply our force generator to our acceleration
-        force-accum (a/get-force-accumulator actor)
-        inverse-mass (a/get-inverse-mass actor)
-        delta-acceleration (map #(* % inverse-mass) force-accum)
-        
-        ;;get our acceleration
-        acceleration (a/get-acceleration actor)
-
-        ;;apply our force accumulator to the acceleration
-        acceleration
-        (a/set-acceleration! actor (map + delta-acceleration acceleration))
-
-        ;;change in velocity due to acceleration
-        delta-velocity (map delta-func acceleration)
+  (let [delta-func (partial * delta)
 
         velocity (a/get-velocity actor)
-        ;;apply this change in velocity
-        velocity (a/set-velocity! actor (map + delta-velocity velocity))
+        delta-velocity (map delta-func velocity)
 
-        ;;from our updated velocity, we can get the change in position
-        delta-position (map delta-func velocity)
+        position (a/get-position actor)
+        position (a/set-position! actor (map + delta-velocity position))
 
-        ;;apply the change in position
-        current-position (a/get-position actor)
-        new-position (map + delta-position current-position)
-        position (a/set-position! actor new-position)
-
-        ;;apply damping
-        damping (a/get-damping actor)
-        velocity (a/set-velocity!
-                  actor
-                  (map (fn [x]
-                         (* x (.pow js/Math damping delta-sec))) velocity))
+        acceleration (a/get-acceleration actor)
+        force-accum (a/get-force-accumulator actor)
+        inverse-mass (a/get-inverse-mass actor)
+        delta-force (map #(* inverse-mass %) force-accum)
         
+        res-acceleration (map + delta-force acceleration)
+        delta-acceleration (map delta-func res-acceleration)
+        
+        velocity (a/set-velocity! actor (map + delta-acceleration velocity))
+
+        damping (a/get-damping actor)
+        delta-damping (Math/pow damping delta)
+        
+        velocity (a/set-velocity! actor (map #(* delta-damping %) velocity))
         ]
     ;;clear our force accumulator for the next iteration
     (a/set-force-accumulator! actor [0 0 0])))
@@ -54,7 +39,7 @@
   "Based on the drag coefficient V(normal) ( k1 |V| + k2 |V|^2 )"
   [actor &
    {:keys [k1 k2]
-    :or {k1 1.0 k2 1.0}}]
+    :or {k1 0.0 k2 0.0}}]
   (swap! dragged-actors conj {:actor actor :k1 k1 :k2 k2}))
 
 (defn apply-drag-generator [drag-reg]
@@ -64,17 +49,14 @@
 
         velocity (a/get-velocity actor)
 
-        velocity-magnitude (mag velocity)
+        velocity-mag (mag velocity)
         
         drag-speed
         (+
-         (* k1 velocity-magnitude)
-         (* k2 velocity-magnitude velocity-magnitude))
+         (* k1 velocity-mag)
+         (* k2 velocity-mag velocity-mag))
         
-        velocity-normal (norm velocity)
-        
-        force (map #(* (- drag-speed) %) velocity-normal)
-        
+        force (map #(* (- drag-speed) %) (norm velocity))
         ]
     (a/add-force! actor force)))
 
