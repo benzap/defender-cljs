@@ -91,12 +91,12 @@
 
 ;;spring tests
 
-(a/set-mass! ship 1000)
+(a/set-mass! ship 1)
 
 ;;tests
 (def ship-spring (physics/add-spring!
                   ship
-                  :spring-constant 50
+                  :spring-constant 0.1
                   :spring-length 200))
 
 (physics/update-spring-anchor! ship-spring 500 500 0)
