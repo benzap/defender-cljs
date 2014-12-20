@@ -155,7 +155,7 @@
         (map (partial * (- force-spring)) (norm force-vector))
 
         ;;clamp the final force, so it doesn't get out of control
-        final-force (clamp final-force 1e5)
+        final-force (clamp final-force 1e4)
         ]
     final-force))
 
@@ -167,13 +167,15 @@
   [spring-reg props]
   (let [actor (:actor spring-reg)
         spring-force (get-spring-force spring-reg)]
-    (a/add-force! actor spring-force)))
+    (a/add-force! actor (clamp spring-force 1e4))))
 
 (defmethod apply-spring-generator :basic-exponential
     [spring-reg props]
   (let [actor (:actor spring-reg)
-        spring-force (get-spring-force spring-reg)]
-    (a/add-force! actor (map * spring-force spring-force))))
+        spring-force (get-spring-force spring-reg)
+        spring-force (map #(Math/exp 2 %) spring-force)
+        ]
+    (a/add-force! actor (clamp spring-force 1e4))))
 
 (defrecord SpringForceGenerator []
   system/System

@@ -39,15 +39,15 @@
  :right
  (a/set-velocity! main-camera [0 0 0]))
 
-(a/set-mass! main-camera 5.0)
-(physics/add-drag! main-camera :k1 0.5 :k2 0.1)
+(a/set-mass! main-camera 1.0)
+(physics/add-drag! main-camera :k1 0.8 :k2 0.3)
 
 
 (def camera-spring
   (physics/add-spring! main-camera
-                       ;;:type :basic-exponential
+                       :type :basic-exponential
                        :spring-length 0
-                       :spring-constant 100
+                       :spring-constant 10000
                        :lock-y-axis true))
 
 (defn update-camera-position []
