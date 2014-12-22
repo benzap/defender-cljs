@@ -32,6 +32,9 @@
     ;;clear our force accumulator for the next iteration
     (a/set-force-accumulator! actor [0 0 0])))
 
+(defn update-scene [scene delta]
+  (doseq [scene-actor @(:actor-list scene)]
+    (update-actor-physics scene-actor delta)))
 
 ;;Drag Generator
 (def dragged-actors (atom []))

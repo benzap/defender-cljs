@@ -47,8 +47,8 @@
 (defn animate []
   (system/run-systems {:delta (/ 1 60.)})
   (obj/rotate! spinning-square 0.01)
-  (physics/update-actor-physics ship (/ 1 60.))
-  (physics/update-actor-physics cam/main-camera (/ 1 60.))
+  (physics/update-scene scene/main (/ 1 60.))
+  (physics/update-scene scene/hud (/ 1 60.))
 )
 
 (defn render []
