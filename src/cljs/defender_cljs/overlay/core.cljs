@@ -8,11 +8,20 @@
 (def hud-line-width 5)
 (def hud-text-size 20)
 
+;;top of the screen overlay. bounds for the map space
+(def left-bound (/ c/hud-width 3))
+(def right-bound (* left-bound 2))
+(def top-bound c/hud-height)
+(def bottom-bound (- c/hud-height c/top-overlay-height))
+
+(def width-segments (/ (- right-bound left-bound)) 7)
+(def inner-left-bound (* 3 width-segments))
+(def inner-right-bound (* 4 width-segments))
+
+
+
 (defn init-hud-outline [scene]
-  (let [left-bound (/ c/hud-width 3)
-        right-bound (* left-bound 2)
-        top-bound c/hud-height
-        bottom-bound (- c/hud-height c/top-overlay-height)
+  (let [
 
         ;;line properties
         line-color (c/colors :blue)
@@ -48,7 +57,11 @@
          [[left-bound (- top-bound (/ line-width 2))]
           [right-bound (- top-bound (/ line-width 2))]]
          :color line-color
-         :line-width line-width)]
+         :line-width line-width)
+
+        white-left-bound nil
+        
+        ]
     
     (.add scene straight-line)
     (.add scene left-line)
