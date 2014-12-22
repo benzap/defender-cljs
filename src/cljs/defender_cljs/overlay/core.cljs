@@ -14,11 +14,9 @@
 (def top-bound c/hud-height)
 (def bottom-bound (- c/hud-height c/top-overlay-height))
 
-(def width-segments (/ (- right-bound left-bound)) 7)
-(def inner-left-bound (* 3 width-segments))
-(def inner-right-bound (* 4 width-segments))
-
-
+(def width-segments (/ (- right-bound left-bound) 7))
+(def inner-left-bound (+ left-bound (* 3 width-segments)))
+(def inner-right-bound (+ left-bound (* 4 width-segments)))
 
 (defn init-hud-outline [scene]
   (let [
@@ -59,14 +57,20 @@
          :color line-color
          :line-width line-width)
 
-        white-left-bound nil
+        white-left-bound
+        (geo/draw-line
+         [[inner-left-bound top-bound 1]
+          [inner-left-bound bottom-bound 1]]
+         :color 0xffffff
+         :line-width line-width)
         
         ]
     
     (.add scene straight-line)
     (.add scene left-line)
     (.add scene right-line)
-    (.add scene top-line)))
+    (.add scene top-line)
+    (.add scene white-left-bound)))
 
 (def score (text/create-label "000000" {:size 20 :color 0xff00ff}))
 (obj/set-position! score 120 (- c/hud-height c/top-overlay-height
