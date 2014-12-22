@@ -27,7 +27,7 @@
         delta-damping (Math/pow damping delta)
         
         velocity (a/set-velocity! actor (map #(* delta-damping %) velocity))
-        velocity (a/set-velocity! actor (clamp velocity 1e10))
+        velocity (a/set-velocity! actor (clamp velocity 1e9))
         ]
     ;;clear our force accumulator for the next iteration
     (a/set-force-accumulator! actor [0 0 0])))
@@ -81,6 +81,9 @@
 
   spring-length -- defines the length of the spring [default: 1]
 
+  damping-ratio -- the damping ratio when set to a value > 0 results
+                   in damped harmonic motion.
+
   lock-x-axis -- if true, prevents the spring from 
                  affecting the x axis [default: false]
 
@@ -103,6 +106,7 @@
                    type
                    spring-constant
                    spring-length
+                   damping-ratio
                    lock-x-axis
                    lock-y-axis
                    anchor-position
@@ -110,6 +114,7 @@
             :or {type :basic
                  spring-constant 0.1
                  spring-length 1
+                 damping-ratio 0
                  lock-x-axis false
                  lock-y-axis false
                  anchor-position
@@ -119,6 +124,7 @@
          :type type
          :spring-constant spring-constant
          :spring-length spring-length
+         :damping-ratio damping-ratio
          :lock-x-axis lock-x-axis
          :lock-y-axis lock-y-axis
          :anchor-position (atom anchor-position)}]
@@ -132,12 +138,20 @@
   (let [actor (:actor spring-reg)
 
         position (a/get-position actor)
+        velocity (a/get-velocity actor)
+        mass (a/get-mass actor)
+        
         anchor-position @(:anchor-position spring-reg)
         spring-length (:spring-length spring-reg)
         spring-constant (:spring-constant spring-reg)
 
         lock-x-axis (:lock-x-axis spring-reg)
         lock-y-axis (:lock-y-axis spring-reg)
+
+        damping-ratio (:damping-ratio spring-reg)
+        
+        damping-constant
+        (* 2 damping-ratio (Math/sqrt (* mass spring-constant)))
         
         [fx fy fz] (map - position anchor-position)
 
@@ -146,16 +160,18 @@
          (if lock-y-axis 0 fy)
          fz]
         
+        ;;spring force (fs)
         force-spring
         (->> (mag force-vector)
              (+ (- spring-length))
-             (* spring-constant))
+             (* spring-constant))        
+
+        force-damping
+        (- (* damping-constant (mag velocity)))
         
         final-force
-        (map (partial * (- force-spring)) (norm force-vector))
-
-        ;;clamp the final force, so it doesn't get out of control
-        final-force (clamp final-force 1e4)
+        (map (partial * (+ (- force-spring) (- force-damping)))
+             (norm force-vector))
         ]
     final-force))
 
@@ -167,15 +183,7 @@
   [spring-reg props]
   (let [actor (:actor spring-reg)
         spring-force (get-spring-force spring-reg)]
-    (a/add-force! actor (clamp spring-force 1e4))))
-
-(defmethod apply-spring-generator :basic-exponential
-    [spring-reg props]
-  (let [actor (:actor spring-reg)
-        spring-force (get-spring-force spring-reg)
-        spring-force (map #(Math/exp 2 %) spring-force)
-        ]
-    (a/add-force! actor (clamp spring-force 1e4))))
+    (a/add-force! actor spring-force)))
 
 (defrecord SpringForceGenerator []
   system/System

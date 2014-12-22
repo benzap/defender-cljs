@@ -18,7 +18,7 @@
     (aset (-> camera .-position) "z" 0)
     (a/create-actor camera :name "camera" :type "camera")))
 
-(def main-camera (make-camera 0 1000 (* 1000 (/ 3 4)) 0))
+(def main-camera (make-camera -500 500 (* 1000 (/ 3 4)) 0))
 (def hud-camera (make-camera 0 1000 (* 1000 (/ 3 4)) 0))
 
 (def camera-speed 600.0)
@@ -40,17 +40,18 @@
  (a/set-velocity! main-camera [0 0 0]))
 
 (a/set-mass! main-camera 1.0)
-(physics/add-drag! main-camera :k1 0.8 :k2 0.3)
+(physics/add-drag! main-camera :k1 0.0 :k2 0.0)
 
 
 (def camera-spring
   (physics/add-spring! main-camera
-                       :type :basic-exponential
+                       :type :basic
                        :spring-length 0
-                       :spring-constant 10000
+                       :spring-constant 500
+                       :damping-ratio 2.0
                        :lock-y-axis true))
 
-(defn update-camera-position []
+#_(defn update-camera-position [delta]
   (let [ship-position (a/get-position ship)
         [shipx _ _] ship-position
         left-pos (* c/view-width (/ 1 5))
@@ -62,6 +63,15 @@
     
     (physics/update-spring-anchor! camera-spring pos 0)))
 
+;;makeshift camera tracking. Doesn't resemble defender for now
+(defn update-camera-position [delta]
+  (let [ship-position (a/get-position ship)
+        [posx _ _] ship-position
+        ship-velocity (a/get-velocity ship)
+        [velx _ _] ship-velocity]
+    (physics/update-spring-anchor!
+     camera-spring
+     (+ posx (* velx delta 20.0)) 0)))
 
 ;;system for tracking and re-adjusting the anchor
 (system/add-system!
@@ -69,4 +79,4 @@
  (reify
    system/System
    (run [_ props]
-     (update-camera-position))))
+     (update-camera-position (:delta props)))))
