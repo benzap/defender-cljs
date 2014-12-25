@@ -7,8 +7,8 @@
             [defender-cljs.actors.ship :refer [ship ship-direction]])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
-(defonce default-camera-near -100)
-(defonce default-camera-far 100)
+(defonce default-camera-near -10)
+(defonce default-camera-far 10)
 
 (defn make-camera [left right top bottom]
   (let [camera
@@ -18,26 +18,13 @@
     (aset (-> camera .-position) "z" 0)
     (a/create-actor camera :name "camera" :type "camera")))
 
-(def main-camera (make-camera -500 500 (* 1000 (/ 3 4)) 0))
-(def hud-camera (make-camera 0 1000 (* 1000 (/ 3 4)) 0))
+(def main-camera (make-camera (- (/ c/view-width 2)) (/ c/view-width 2) 
+                              c/view-height 0))
+;;set the camera to the center of the screen
+(a/set-position! main-camera [(/ c/map-width 2) 0 0])
 
-(def camera-speed 600.0)
-
-(on-keydown
- :left
- (a/set-velocity! main-camera [(- camera-speed) 0 0]))
-
-(on-keyup
- :left
- (a/set-velocity! main-camera [0 0 0]))
-
-(on-keydown
- :right
- (a/set-velocity! main-camera [camera-speed 0 0]))
-
-(on-keyup
- :right
- (a/set-velocity! main-camera [0 0 0]))
+(def hud-camera (make-camera 0 c/hud-width 
+                             c/hud-height 0))
 
 (a/set-mass! main-camera 1.0)
 (physics/add-drag! main-camera :k1 0.0 :k2 0.0)

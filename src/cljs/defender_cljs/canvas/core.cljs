@@ -8,6 +8,7 @@
             [defender-cljs.canvas.system :as system]
             [defender-cljs.overlay.core :as overlay]
             [defender-cljs.canvas.sprite :as sprite]
+            [defender-cljs.constants :as c]
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
             [defender-cljs.events :as e])
@@ -25,9 +26,7 @@
 (def renderer (THREE.WebGLRenderer.))
 (.setSize renderer width height)
 
-(def spinning-square (geo/square 200 200 200 200))
-
-(a/set-position! ship [500 500 0])
+(a/set-position! ship [(/ c/map-width 2) (/ c/view-height 2) 0])
 
 ;;testing out landers
 (defn gen []
@@ -38,7 +37,7 @@
 
 (doseq [i (range 50)]
   (gen))
-
+ 
 (defn gen-projectile []
   (let [proj (make-projectile)]
     (scene/add-actor! scene/main proj)
@@ -48,13 +47,12 @@
 #_(doseq [i (range 50)]
   (gen-projectile))
 
-(on-timeout 5 (js/alert "hello!"))
+#_(on-timeout 5 (js/alert "hello!"))
 
 ;;populate the main scene
 
 (doto scene/main
   (scene/add-actor! cam/main-camera)
-  (scene/add-object! spinning-square)
   (scene/add-actor! ship))
 
 ;;populate the hud scene
@@ -68,7 +66,6 @@
 
 (defn animate []
   (system/run-systems {:delta (/ 1 60.)})
-  (obj/rotate! spinning-square 0.01)
   (physics/update-scene scene/main (/ 1 60.))
   (physics/update-scene scene/hud (/ 1 60.))
 )
