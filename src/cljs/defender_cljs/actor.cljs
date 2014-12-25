@@ -1,6 +1,7 @@
 (ns defender-cljs.actor
   "Includes the actor pattern for representing entities within the game"
-  (:require [defender-cljs.canvas.object :as obj]))
+  (:require [defender-cljs.canvas.object :as obj]
+            [defender-cljs.constants :as c]))
 
 (defn create-actor
   "Creates an actor with all of the required attributes"
@@ -20,9 +21,28 @@
           :width 64
           :height 64})})
 
-(defn get-position [actor]
+(defn get-position 
+  [actor]
   (let [entity-position (-> actor :entity .-position)]
     [(.-x entity-position)
+     (.-y entity-position)
+     (.-z entity-position)]))
+
+(defn modulus-wrap 
+  "the map world is [-map-width/2, map-width/2]. This function wraps
+  the x coordinate into that range"
+  [x]
+  (let [d (/ c/map-width 2)]
+    (cond 
+     (<= x (- d)) (+ (rem x d) d)
+     (>= x d) (- (rem x d) d)
+     :else x)))
+
+(defn get-game-position 
+  "This is the position within the game coordinate"
+  [actor]
+  (let [entity-position (-> actor :entity .-position)]
+    [(modulus-wrap (.-x entity-position))
      (.-y entity-position)
      (.-z entity-position)]))
 

@@ -1,6 +1,9 @@
 (ns defender-cljs.canvas.scene
   "Includes abstractions over the three.js scene to store categories
-  of certain displayed data")
+  of certain displayed data"
+  (:require [defender-cljs.constants]
+            [defender-cljs.canvas.camera :as camera]
+            [defender-cljs.canvas.system :as system]))
 
 (defn create-scene [& {:keys []}]
   {:scene-instance (THREE.Scene.)
@@ -34,3 +37,12 @@
 
 ;; Static scene for displaying HUD elements
 (def hud (create-scene))
+
+
+;;
+;; Systems.
+;;
+
+;;system for re-positioning the actors on the other side of the map
+;;based on the current position of the main camera
+;;this gives the impression that the actors are on a finite map
