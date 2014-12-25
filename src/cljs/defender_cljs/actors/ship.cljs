@@ -14,7 +14,14 @@
 (def ship-thrust-speed 4000.0)
 (def ship-elevation-speed 800.0)
 
-(def ship-sprite (sprite/make-sprite "ship.png"))
+;;load our ship assets
+(sprite/load-texture "ship" "ship.png")
+
+;;create our ship materials
+(def main-material (sprite/make-sprite-material "ship"))
+
+
+(def ship-sprite (sprite/make-sprite main-material))
 
 (def ship
   (a/create-actor

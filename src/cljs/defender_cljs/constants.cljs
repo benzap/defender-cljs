@@ -12,7 +12,7 @@
 (def hud-height (* hud-width (/ 3 4)))
 
 ;;the height of the hud overlay at the top
-(def top-overlay-height (/ view-height 5))
+(def top-overlay-height (/ view-height 7))
 
 (def colors
   {:green 0x00ff00

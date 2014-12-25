@@ -2,8 +2,6 @@
   "Includes the actor pattern for representing entities within the game"
   (:require [defender-cljs.canvas.object :as obj]))
 
-(def actor-list (atom []))
-
 (defn create-actor
   "Creates an actor with all of the required attributes"
   [obj & {:keys [name type damping inverse-mass]
@@ -18,9 +16,9 @@
           :inverse-mass inverse-mass
           :damping damping})
    :collision
-   {:type "AABB"
-    :width 64
-    :height 64}})
+   (atom {:type "AABB"
+          :width 64
+          :height 64})})
 
 (defn get-position [actor]
   (let [entity-position (-> actor :entity .-position)]
