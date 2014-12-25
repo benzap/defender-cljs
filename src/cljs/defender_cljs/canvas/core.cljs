@@ -11,8 +11,11 @@
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
             [defender-cljs.events :as e])
-  (:use [defender-cljs.actors.ship :only [ship]])
-  (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
+  (:use [defender-cljs.utils :only [log get-random-location]]
+        [defender-cljs.actors.ship :only [ship]]
+        [defender-cljs.enemies.lander :only [make-lander]]
+        [defender-cljs.actors.projectile :only [make-projectile]])
+  (:require-macros [defender-cljs.events :refer [on-keyup on-keydown on-timeout]]))
 
 (def dom (.getElementById js/document "app"))
 
@@ -26,12 +29,31 @@
 
 (a/set-position! ship [500 500 0])
 
+;;testing out landers
+(defn gen []
+  (let [lander (make-lander)]
+    (scene/add-actor! scene/main lander)
+    (a/set-position! lander (get-random-location))
+    (log "lander" lander)))
+
+(doseq [i (range 50)]
+  (gen))
+
+(defn gen-projectile []
+  (let [proj (make-projectile)]
+    (scene/add-actor! scene/main proj)
+    (a/set-position! proj (get-random-location))
+    (log "lander" proj)))
+
+#_(doseq [i (range 50)]
+  (gen-projectile))
+
+(on-timeout 5 (js/alert "hello!"))
+
 ;;populate the main scene
 
 (doto scene/main
   (scene/add-actor! cam/main-camera)
-  (scene/add-object! (geo/square 50 50 100 100 :color 0x330000))
-  (scene/add-object! (geo/square 50 100 100 100))
   (scene/add-object! spinning-square)
   (scene/add-actor! ship))
 

@@ -9,3 +9,5 @@
          :enemies []
          :lives 0
          :player {:position [0 0]}}))
+
+(defn main [])

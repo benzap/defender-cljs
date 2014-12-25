@@ -6,9 +6,13 @@
 (defn create-enemy 
   "Resembles the same functionality as an actor, but includes extra
   information specific to enemies"
-  [obj & {:keys []
+  [obj & {:keys [initial-state]
+          :or {initial-state :sleeping}
           :as attr}]
-  (let [actor (apply a/create-actor obj (flatten attr))] 
+  (let [actor (apply a/create-actor obj (flatten (vec attr)))]
     (merge 
      actor
-     {})))
+     {:current-state 
+      (atom 
+       {:state :sleeping
+        :aggro 0.0})})))

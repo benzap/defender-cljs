@@ -6,3 +6,6 @@
 
 (defmacro on-keyup [key & body]
   `(set-on-keyup ~key (fn [] ~@body)))
+
+(defmacro on-timeout [time-sec & body]
+  `(set-on-timeout ~time-sec (fn [] ~@body)))
