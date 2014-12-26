@@ -1,9 +1,12 @@
 (ns defender-cljs.canvas.scene
   "Includes abstractions over the three.js scene to store categories
   of certain displayed data"
+  (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.constants]
             [defender-cljs.canvas.camera :as camera]
-            [defender-cljs.canvas.system :as system]))
+            [defender-cljs.canvas.system :as system]
+            [defender-cljs.actor :as a]
+            [defender-cljs.constants :as c]))
 
 (defn create-scene [& {:keys []}]
   {:scene-instance (THREE.Scene.)
@@ -45,4 +48,25 @@
 
 ;;system for re-positioning the actors on the other side of the map
 ;;based on the current position of the main camera
-;;this gives the impression that the actors are on a finite map
+;;this gives the impression that the actors are on a finite map bound on the x axis
+
+(defn generate-fixed-width-map []
+  (let [[x _ _] (a/get-position camera/main-camera)
+        extent (/ c/map-width 2)
+        xmax (+ x extent)
+        xmin (- x extent)]
+    (doseq [actor @(:actor-list main)]
+      (let [[xpos ypos zpos] (a/get-position actor)
+            xpos 
+            (cond 
+             (< xpos xmin) (+ (rem xpos (- c/map-width)) x)
+             (> xpos xmax) (- (rem xpos c/map-width) x)
+             :else xpos)]
+        (a/set-position! actor [xpos ypos zpos])))))
+
+(system/add-system!
+ :fixed-width-map
+ (reify
+   system/System
+   (run [_ props]
+     (generate-fixed-width-map))))

@@ -1,7 +1,8 @@
 (ns defender-cljs.actor
   "Includes the actor pattern for representing entities within the game"
   (:require [defender-cljs.canvas.object :as obj]
-            [defender-cljs.constants :as c]))
+            [defender-cljs.constants :as c]
+            [defender-cljs.canvas.camera :as camera]))
 
 (defn create-actor
   "Creates an actor with all of the required attributes"
@@ -32,10 +33,11 @@
   "the map world is [-map-width/2, map-width/2]. This function wraps
   the x coordinate into that range"
   [x]
-  (let [d (/ c/map-width 2)]
+  (let [ld (- (/ c/map-width 2))
+        hd (/ c/map-width 2)]
     (cond 
-     (<= x (- d)) (+ (rem x d) d)
-     (>= x d) (- (rem x d) d)
+     (<= x ld) (+ (rem x ld) ld)
+     (>= x hd) (- (rem x hd) hd)
      :else x)))
 
 (defn get-game-position 
