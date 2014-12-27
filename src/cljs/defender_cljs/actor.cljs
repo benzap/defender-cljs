@@ -1,8 +1,7 @@
 (ns defender-cljs.actor
   "Includes the actor pattern for representing entities within the game"
   (:require [defender-cljs.canvas.object :as obj]
-            [defender-cljs.constants :as c]
-            [defender-cljs.canvas.camera :as camera]))
+            [defender-cljs.constants :as c]))
 
 (defn create-actor
   "Creates an actor with all of the required attributes"
