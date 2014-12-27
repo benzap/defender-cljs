@@ -50,23 +50,16 @@
 ;;based on the current position of the main camera
 ;;this gives the impression that the actors are on a finite map bound on the x axis
 
-(defn modulus-wrap 
-  "the map world is [-map-width/2, map-width/2]. This function wraps
-  the x coordinate into that range"
-  [x]
-  (let [[camx _ _] (a/get-position camera/main-camera)
-        extent (/ c/map-width 2)
-        xmax (+ camx extent)
-        xmin (- camx extent)]
-    (cond
-     (> x xmax)
-     (+ xmin (rem x xmax))
-     (< x xmin)
-     (- xmax (rem x xmin))
-     :else x)))
+(defn modulus-wrap [entity-x camera-x]
+  (let [xmin 0
+        xmax map-width
+        local-x (- entity-x camera-x)]
+    (if (or (> local-x xmax) (< local-x xmin))
+      (+ camera-x (mod local-x xmax))
+      entity-x)))
 
 (defn generate-fixed-width-map []
-  (let [[x _ _] (a/get-position camera/main-camera)
+  (let [[cam-x _ _] (a/get-position camera/main-camera)
         actors
         (filter
          (fn [actor]
@@ -75,8 +68,8 @@
             :else true))
          @(:actor-list main))]
     (doseq [actor actors]
-      (let [[xpos ypos zpos] (a/get-position actor)
-            xpos (modulus-wrap xpos)]
+      (let [[entity-x ypos zpos] (a/get-position actor)
+            entity-x (modulus-wrap entity-x cam-x)]
         (a/set-position! actor [xpos ypos zpos])))))
 
 (system/add-system!
