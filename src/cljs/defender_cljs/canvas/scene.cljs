@@ -29,7 +29,7 @@
   (.add (-> scene :scene-instance) obj))
 
 (defn remove-object! [scene obj]
-  (.remove (-> scene :scene-instance obj)))
+  (.remove (-> scene :scene-instance) obj))
 
 ;;
 ;; Scenes.
