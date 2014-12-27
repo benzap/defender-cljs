@@ -32,22 +32,10 @@
 (defn gen []
   (let [lander (make-lander)]
     (scene/add-actor! scene/main lander)
-    (a/set-position! lander (get-random-location))
-    (log "lander" lander)))
+    (a/set-position! lander (get-random-location))))
 
 (doseq [i (range 50)]
   (gen))
- 
-(defn gen-projectile []
-  (let [proj (make-projectile)]
-    (scene/add-actor! scene/main proj)
-    (a/set-position! proj (get-random-location))
-    (log "lander" proj)))
-
-#_(doseq [i (range 50)]
-  (gen-projectile))
-
-#_(on-timeout 5 (js/alert "hello!"))
 
 ;;populate the main scene
 

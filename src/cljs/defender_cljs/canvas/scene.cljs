@@ -52,7 +52,7 @@
 
 (defn modulus-wrap [entity-x camera-x]
   (let [xmin 0
-        xmax map-width
+        xmax c/map-width
         local-x (- entity-x camera-x)]
     (if (or (> local-x xmax) (< local-x xmin))
       (+ camera-x (mod local-x xmax))
@@ -65,12 +65,13 @@
          (fn [actor]
            (cond
             (= (:type actor) "camera") false
+            (= (:type actor) "ship") false
             :else true))
          @(:actor-list main))]
     (doseq [actor actors]
       (let [[entity-x ypos zpos] (a/get-position actor)
-            entity-x (modulus-wrap entity-x cam-x)]
-        (a/set-position! actor [xpos ypos zpos])))))
+            entity-x (modulus-wrap entity-x (- cam-x (/ c/map-width 2)))]
+        (a/set-position! actor [entity-x ypos zpos])))))
 
 (system/add-system!
  :fixed-width-map
