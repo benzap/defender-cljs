@@ -65,3 +65,4 @@
 ;;through the animation delta
 (defn set-on-timeout [time-sec callback]
   (.setTimeout js/window callback (* time-sec 1000)))
+
