@@ -15,10 +15,10 @@
 (def ship-elevation-speed 800.0)
 
 ;;load our ship assets
-(sprite/load-texture "ship" "ship.png")
+(sprite/load-texture :ship "ship.png")
 
 ;;create our ship materials
-(def main-material (sprite/make-sprite-material "ship"))
+(def main-material (sprite/make-sprite-material :ship))
 
 
 (def ship-sprite (sprite/make-sprite main-material))
@@ -26,8 +26,8 @@
 (def ship
   (a/create-actor
    ship-sprite
-   :name "ship"
-   :type "ship"
+   :name :ship
+   :type :ship
    :damping damping
    :inverse-mass (/ 1 mass)))
 

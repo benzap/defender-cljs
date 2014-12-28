@@ -71,4 +71,6 @@
 
 (render)
 
-(map/add-map-point! nil)
+(map/update-map-point-listing scene/main)
+
+(log "map points:" @map/map-points)
