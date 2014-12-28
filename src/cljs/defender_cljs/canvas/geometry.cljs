@@ -2,9 +2,12 @@
   "A set of basic primitives for making elements in the playing field"
   (:require [defender-cljs.canvas.object :as obj]))
 
-(defn square [width height
-              & {:keys [color]
-                 :or {color 0xaaffaa}}]
+(defn square [& {:keys [width
+                        height
+                        depth
+                        color]
+                 :or {color 0xaaffaa
+                      depth 1}}]
   (let [geometry (THREE.BoxGeometry. width height 1)
         material (THREE.MeshBasicMaterial. #js {:color color})
         mesh (THREE.Mesh. geometry material)]

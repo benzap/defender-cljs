@@ -71,6 +71,19 @@
 
 (render)
 
-(map/update-map-point-listing scene/main)
+;;simulate putting a point on the map, and removing it
 
-(log "map points:" @map/map-points)
+(def lander-test (make-lander))
+(a/set-position! lander-test [500 500 0])
+
+(on-keydown 
+ :p
+ (log "actor added to scene")
+ (scene/add-actor! scene/main lander-test)
+ )
+
+(on-keyup
+ :p
+ (log "actor removed from scene")
+ (scene/remove-actor! scene/main lander-test)
+ )

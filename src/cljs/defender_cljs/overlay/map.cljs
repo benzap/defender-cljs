@@ -30,18 +30,25 @@
 
 (defmethod create-map-point [:ship :ship]
   [actor]
-  (geo/square 5 5 :color 0xffffff))
+  (geo/square 
+   :width 5 
+   :height 5 
+   :depth 1
+   :color 0xffffff))
 
 (defmethod create-map-point [:enemy :lander]
   [actor]
-  (geo/square 5 5 :color 0xaaffaa))
+  (geo/square 
+   :width 5 
+   :height 5 
+   :depth 1
+   :color 0xaaffaa))
 
 (defn add-map-point!
   [actor &
    {:keys [color]
     :or {color 0xaaffaa}}]
   (let [map-point (create-map-point actor)]
-    (log "adding map point" map-point)
     (when (some? map-point)
       (scene/add-object! scene/hud map-point)
       (swap! map-points assoc actor map-point))
@@ -57,18 +64,32 @@
 (defn get-actor-list [scene]
   @(scene :actor-list))
 
+(defn update-point-position! [actor point-obj]
+  (let [
+        
+        
+        ]))
+
 (defn update-map-point-listing [scene]
   ;;include any new actors within our map points
   (doseq [actor (get-actor-list scene/main)]
     (when (nil? (@map-points actor))
-      (log "adding actor" actor)
       (add-map-point! actor)))
+
   ;;check if there are any actors in our map-points, that shouldn't exist
   (let [map-actors (set (keys @map-points))
         scene-actors (set (get-actor-list scene/main))]
     (doseq [actor (difference map-actors scene-actors)]
+      (log "removing actor" actor)
       (remove-map-point! actor)))
 
   ;;iterate over our map-points, and update their positions
-  
-  )
+  (doseq [[actor point-obj] @map-points]
+    (update-point-position! actor point-obj)))
+
+(system/add-system!
+ :map-updater
+ (reify
+   system/System
+   (run [_ props]
+     (update-map-point-listing scene/main))))
