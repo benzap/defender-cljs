@@ -10,7 +10,7 @@
             [defender-cljs.canvas.geometry :as geo]
             [defender-cljs.canvas.object :as obj]
             [defender-cljs.actor :as a]
-            [defender-cljs.canvas.camera :as camera]
+            [defender-cljs.canvas.camera :as cam]
             [defender-cljs.canvas.system :as system]))
 
 (def map-points
@@ -39,10 +39,10 @@
 (defmethod create-map-point [:enemy :lander]
   [actor]
   (geo/square 
-   :width 5 
-   :height 5 
+   :width 3 
+   :height 3 
    :depth 1
-   :color 0xaaffaa))
+   :color 0x33ff33))
 
 (defn add-map-point!
   [actor &
@@ -65,10 +65,30 @@
   @(scene :actor-list))
 
 (defn update-point-position! [actor point-obj]
-  (let [
+  (let [bounds 
+        {:left left-bound
+         :right right-bound
+         :top top-bound
+         :bottom bottom-bound
+         :width (- right-bound left-bound)
+         :height (- top-bound bottom-bound)
+         :center-x (+ (/ (- right-bound left-bound) 2) left-bound)
+         :center-y (+ (/ (- top-bound bottom-bound) 2) bottom-bound)}
         
         
-        ]))
+        camera-pos (a/get-position cam/main-camera)
+        actor-pos (a/get-position actor)
+        
+        relative-pos (map - actor-pos camera-pos)
+        [relx rely _] relative-pos
+        
+        rely (- rely (/ c/view-height 2))
+
+        mapx (+ (* relx (/ (bounds :width) c/map-width)) (bounds :center-x))
+        mapy (+ (* rely (/ (bounds :height) c/view-height)) (bounds :center-y))
+
+        ]
+    (obj/set-position! point-obj mapx mapy -5)))
 
 (defn update-map-point-listing [scene]
   ;;include any new actors within our map points

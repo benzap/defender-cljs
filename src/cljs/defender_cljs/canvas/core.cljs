@@ -35,7 +35,7 @@
     (scene/add-actor! scene/main lander)
     (a/set-position! lander (get-random-location))))
 
-(doseq [i (range 50)]
+(doseq [i (range 25)]
   (gen))
 
 ;;populate the main scene
