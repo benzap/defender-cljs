@@ -10,7 +10,7 @@
                           :or {color 0xffffff}}]
   (let [material (THREE.MeshBasicMaterial.
                   #js {:color color})
-        geometry (THREE.CircleGeometry. 1 8)
+        geometry (THREE.CircleGeometry. 3 5)
         circle (THREE.Mesh. geometry material)]
     (a/create-actor circle
                     :name "projectile"
@@ -66,11 +66,7 @@
         projectile
         (if (nil? proj-map)
           (add-projectile! type)
-          (do
-            (log proj-map)
-            (proj-map :obj)))
-
-        _ (log "firing projectile" projectile)
+          (proj-map :obj))
         ]
     (make-inactive! type projectile)
     (a/set-position! projectile position)
@@ -80,5 +76,4 @@
      timeout
      (scene/remove-actor! scene/main projectile)
      (make-active! type projectile))
-    (log "projectile position" (a/get-position projectile))
     projectile))
