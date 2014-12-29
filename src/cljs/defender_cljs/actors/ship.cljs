@@ -6,7 +6,8 @@
             [defender-cljs.canvas.system :as system]
             [defender-cljs.physics :as physics]
             [defender-cljs.events :as events]
-            [defender-cljs.constants :as c])
+            [defender-cljs.constants :as c]
+            [defender-cljs.actors.projectile :refer [fire-projectile]])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown]]))
 
 (def mass 1)
@@ -87,9 +88,19 @@
    (stop-ship))
  (obj/scale! (-> ship :entity) -1 1))
 
+(def ship-fire-speed 2000)
+
 (on-keydown
  (c/keyboard-config :fire)
- (log "firing phasers!"))
+ (let [[px py _] (a/get-position ship)
+       [vx _ _] (a/get-velocity ship)
+       vx (condp = @ship-direction
+            :right (- (+ (- vx) ship-fire-speed))
+            :left (+ vx ship-fire-speed))]
+   (log "fire speed" vx)
+   (fire-projectile :position [px py 0]
+                    :velocity [vx 0 0]
+                    :timeout 0.3)))
 
 (on-keydown
  (c/keyboard-config :bomb)
