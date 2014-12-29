@@ -1,11 +1,9 @@
 (ns defender-cljs.canvas.core
   (:require [defender-cljs.canvas.camera :as cam]
             [defender-cljs.canvas.scene :as scene]
-            [defender-cljs.canvas.geometry :as geo]
             [defender-cljs.canvas.system :as system]
             [defender-cljs.overlay.core :as overlay]
             [defender-cljs.overlay.map :as map]
-            [defender-cljs.canvas.sprite :as sprite]
             [defender-cljs.constants :as c]
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
