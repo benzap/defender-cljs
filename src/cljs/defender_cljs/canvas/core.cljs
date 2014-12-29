@@ -16,7 +16,7 @@
   (:use [defender-cljs.utils :only [log get-random-location]]
         [defender-cljs.actors.ship :only [ship]]
         [defender-cljs.enemies.lander :only [make-lander]]
-        [defender-cljs.actors.projectile :only [make-projectile]])
+        [defender-cljs.actors.projectile :only [fire-projectile]])
   (:require-macros [defender-cljs.events :refer [on-keyup on-keydown on-timeout]]))
 
 (def dom (.getElementById js/document "app"))
@@ -71,19 +71,11 @@
 
 (render)
 
-;;simulate putting a point on the map, and removing it
-
-(def lander-test (make-lander))
-(a/set-position! lander-test [500 500 0])
+;;simulate firing a projectile
 
 (on-keydown 
  :p
- (log "actor added to scene")
- (scene/add-actor! scene/main lander-test)
+ (fire-projectile)
  )
 
-(on-keyup
- :p
- (log "actor removed from scene")
- (scene/remove-actor! scene/main lander-test)
- )
+
