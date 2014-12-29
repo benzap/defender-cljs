@@ -75,7 +75,8 @@
 
 (on-keydown 
  :p
- (fire-projectile)
+ (log "firing projectile")
+ (fire-projectile :timeout 1 :position [3500 375 0])
  )
 
 

@@ -1,6 +1,8 @@
 (ns defender-cljs.actors.projectile
+  (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.actor :as a]
-            [defender-cljs.canvas.scene :as scene])
+            [defender-cljs.canvas.scene :as scene]
+            [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-timeout]]))
 
 
@@ -33,7 +35,7 @@
   (reset!
    (projectile-listing type)
    (map (fn [proj-map]
-          (if (= (proj-map :obj))
+          (if (= (proj-map :obj) projectile)
             {:obj (proj-map :obj) :active true}
             proj-map))
         @(projectile-listing type))))
@@ -42,7 +44,7 @@
   (reset!
    (projectile-listing type)
    (map (fn [proj-map]
-          (if (= (proj-map :obj))
+          (if (= (proj-map :obj) projectile)
             {:obj (proj-map :obj) :active false}
             proj-map))
         @(projectile-listing type))))
@@ -51,15 +53,25 @@
 (defn fire-projectile
   [& {:keys [type position velocity timeout]
       :or {type :basic
-           position [0 0 0]
+           position [0 (/ c/view-height 2) 0]
            velocity [400 0 0]
            timeout 1}}]
-  (let [[projectile active]
-        (take 1 (filter #(% :active) @(projectile-listing type)))
+  (let [proj-map
+        (->> @(projectile-listing type)
+             (filter #(% :active))
+             (take 1)
+             (first)
+             )
+        
         projectile
-        (if (nil? projectile)
+        (if (nil? proj-map)
           (add-projectile! type)
-          projectile)]
+          (do
+            (log proj-map)
+            (proj-map :obj)))
+
+        _ (log "firing projectile" projectile)
+        ]
     (make-inactive! type projectile)
     (a/set-position! projectile position)
     (a/set-velocity! projectile velocity)
@@ -68,4 +80,5 @@
      timeout
      (scene/remove-actor! scene/main projectile)
      (make-active! type projectile))
-    ))
+    (log "projectile position" (a/get-position projectile))
+    projectile))
