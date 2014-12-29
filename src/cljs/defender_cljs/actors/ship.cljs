@@ -32,7 +32,8 @@
    :damping damping
    :inverse-mass (/ 1 mass)))
 
-(physics/add-drag! ship :k1 0.2 :k2 0.001)
+#_(physics/add-drag! ship :k1 0.2 :k2 0.001)
+(physics/add-drag! ship :k1 0.0 :k2 0.001)
 
 (def ship-direction (atom :left))
 (defn switch-ship-direction []

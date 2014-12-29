@@ -42,17 +42,23 @@
 (defn add-drag!
   "Based on the drag coefficient V(normal) ( k1 |V| + k2 |V|^2 )"
   [actor &
-   {:keys [k1 k2]
-    :or {k1 0.0 k2 0.0}}]
-  (swap! dragged-actors conj {:actor actor :k1 k1 :k2 k2}))
+   {:keys [k1 k2 k1-axis k2-axis]
+    :or {k1 0.0 k2 0.0
+         k1-axis [1.0 1.0 1.0]
+         k2-axis [1.0 1.0 1.0]}}]
+  (swap! dragged-actors conj {:actor actor :k1 k1 :k2 k2
+                              :k1-axis k1-axis
+                              :k2-axis k2-axis}))
 
 (defn apply-drag-generator [drag-reg]
   (let [actor (:actor drag-reg)
         k1 (:k1 drag-reg)
+        k1-axis (:k1-axis drag-reg)
         k2 (:k2 drag-reg)
-
+        k2-axis (:k2-axis drag-reg)
+        
         velocity (a/get-velocity actor)
-
+        
         velocity-mag (mag velocity)
         
         drag-speed
