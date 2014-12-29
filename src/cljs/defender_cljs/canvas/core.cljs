@@ -1,8 +1,5 @@
 (ns defender-cljs.canvas.core
-  (:require [defender-cljs.canvas.object :as obj]
-            [defender-cljs.canvas.camera :as cam]
-            [defender-cljs.canvas.hud :as hud]
-            [defender-cljs.canvas.text :as text]
+  (:require [defender-cljs.canvas.camera :as cam]
             [defender-cljs.canvas.scene :as scene]
             [defender-cljs.canvas.geometry :as geo]
             [defender-cljs.canvas.system :as system]
@@ -12,12 +9,15 @@
             [defender-cljs.constants :as c]
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
-            [defender-cljs.events :as e])
+            [defender-cljs.events :as e]
+            [defender-cljs.systems.scene-tracking :refer [generate-fixed-width-map]])
   (:use [defender-cljs.utils :only [log get-random-location]]
         [defender-cljs.actors.ship :only [ship]]
         [defender-cljs.enemies.lander :only [make-lander]]
         [defender-cljs.actors.projectile :only [fire-projectile]])
-  (:require-macros [defender-cljs.events :refer [on-keyup on-keydown on-timeout]]))
+  (:require-macros [defender-cljs.events :refer [on-keyup on-keydown on-timeout]]
+                   [defender-cljs.canvas.system :refer [new-system-with-name]]
+                   ))
 
 (def dom (.getElementById js/document "app"))
 
@@ -52,6 +52,17 @@
 ;;clear the inside
 (aset dom "innerHTML" "")
 (.appendChild dom (-> renderer .-domElement))
+
+;;add all of our systems
+;;(new-system-with-name :fixed-width-map (generate-fixed-width-map))
+(system/add-system!
+ :fixed-width-map
+ (reify
+   system/System
+   (run [_ props]
+     (generate-fixed-width-map))))
+
+
 
 (defn animate []
   (system/run-systems {:delta (/ 1 60.)})

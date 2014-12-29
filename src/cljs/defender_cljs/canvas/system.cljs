@@ -1,5 +1,7 @@
 (ns defender-cljs.canvas.system
-  "handles the render loop, and lets you pass in your own system logic")
+  "handles the render loop, and lets you pass in your own system logic"
+  (:require-macros [defender-cljs.canvas.system :refer [new-system-with-name]])
+  )
 
 (defprotocol System
   (run [this props]))
