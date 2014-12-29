@@ -31,6 +31,8 @@
    :damping damping
    :inverse-mass (/ 1 mass)))
 
+(physics/add-drag! ship :k1 0.2 :k2 0.001)
+
 (def ship-direction (atom :left))
 (defn switch-ship-direction []
   (let [direction @ship-direction
@@ -97,25 +99,9 @@
  (c/keyboard-config :hyperspace)
  (log "Hyperspace!"))
 
-;;drag tests
 
-(physics/add-drag! ship :k1 0.2 :k2 0.001)
 
-;;spring tests
 
-;;tests
-#_(def ship-spring (physics/add-spring!
-                  ship
-                  :spring-constant 10
-                  :spring-length 0
-                  :lock-y-axis true))
 
-#_(physics/update-spring-anchor! ship-spring 500 500 0)
 
-#_(log ship-spring)
 
-#_(system/add-system!
- :test-system
- (reify system/System
-   (run [_ props]
-     (a/add-force! ship [10 0 0]))))

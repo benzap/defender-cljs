@@ -1,5 +1,8 @@
 (ns defender-cljs.events
-  (:require-macros [defender-cljs.events :refer [on-keydown on-keyup]]))
+  (:use [defender-cljs.utils :only [log]])
+  (:require [defender-cljs.canvas.system :as system])
+  (:require-macros [defender-cljs.events
+                    :refer [on-keydown on-keyup on-timeout]]))
 
 (def keycode-map
   {:enter 13
@@ -63,6 +66,42 @@
 
 ;;TODO make this register itself to a system which accumulates time
 ;;through the animation delta
-(defn set-on-timeout [time-sec callback]
-  (.setTimeout js/window callback (* time-sec 1000)))
 
+
+(def timed-events (atom []))
+(def timed-id (atom 0))
+(def timer-clock (atom 0.0))
+
+
+(defn add-timed-event! [time func]
+  (swap! timed-events conj {:id @timed-id
+                            :func func
+                            :time (+ @timer-clock time)})
+  (swap! timed-id inc))
+
+(defn remove-timed-event! [id]
+  (let [events @timed-events]
+    (reset! timed-events (filter #(not= id (% :id)) events))))
+
+(defn set-on-timeout [time-sec callback]
+  (add-timed-event! time-sec callback)
+  ;;(.setTimeout js/window callback (* time-sec 1000))
+  )
+
+(system/add-system!
+ :event-timer
+ (reify
+   system/System
+   (run [_ props]
+     (let [delta (props :delta)]
+       (swap! timer-clock + delta)
+       (doseq [{:keys [id func time]} @timed-events]
+         (when (> @timer-clock time)
+           (func)
+           (remove-timed-event! id))
+         ;;(log id func time)
+         )))))
+
+(on-timeout
+ 3 ;;seconds
+ (log "ding!"))
