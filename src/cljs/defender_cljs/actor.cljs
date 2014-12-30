@@ -17,9 +17,10 @@
           :inverse-mass inverse-mass
           :damping damping})
    :collision
-   (atom {:type "AABB"
+   (atom {:type :aabb
           :width 64
-          :height 64})})
+          :height 64
+          :origin [0 0 0]})})
 
 (defn get-position 
   [actor]
