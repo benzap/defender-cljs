@@ -1,7 +1,8 @@
 (ns defender-cljs.events
   (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.canvas.system :as system]
-            [defender-cljs.collision :as collision])
+            [defender-cljs.collision :as collision]
+            [defender-cljs.canvas.scene :as scene])
   (:require-macros [defender-cljs.events
                     :refer [on-keydown on-keyup on-timeout]]))
 
@@ -118,3 +119,16 @@
 (defn set-on-collision-actors [from-actor to-actor callback])
 
 (defn set-on-collision-type [from-type to-type])
+
+(system/add-system!
+ :collision-system
+ (reify
+   system/System
+   (run [_ props]
+     (let [from-actors @(-> scene/main :actor-list)
+           to-actors from-actors
+
+           collision-listing
+           (collision/generate-collision-listing from-actors to-actors)]
+       (log collision-listing)
+       ))))
