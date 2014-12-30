@@ -1,6 +1,7 @@
 (ns defender-cljs.events
   (:use [defender-cljs.utils :only [log]])
-  (:require [defender-cljs.canvas.system :as system])
+  (:require [defender-cljs.canvas.system :as system]
+            [defender-cljs.collision :as collision])
   (:require-macros [defender-cljs.events
                     :refer [on-keydown on-keyup on-timeout]]))
 
@@ -64,8 +65,9 @@
  (.log js/console "right up!"))
 
 
-;;TODO make this register itself to a system which accumulates time
-;;through the animation delta
+;;
+;; Timed Events System
+;;
 
 
 (def timed-events (atom []))
@@ -102,6 +104,17 @@
          ;;(log id func time)
          )))))
 
-(on-timeout
+#_(on-timeout
  3 ;;seconds
  (log "ding!"))
+
+
+;;
+;; Collision Events System
+;;
+
+(def collision-list (atom []))
+
+(defn set-on-collision-actors [from-actor to-actor callback])
+
+(defn set-on-collision-type [from-type to-type])
