@@ -29,7 +29,6 @@
            (< x2 (+ x1 w1))
            (< y1 (+ y2 h2))
            (< y2 (+ y1 h1)))
-        (log "collision detected!" first-actor second-actor)
         {:first first-actor :second second-actor}
         )))
 

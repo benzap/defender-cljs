@@ -113,3 +113,13 @@
 (defn add-force! [actor force]
   (let [current-force (get-force-accumulator actor)]
     (set-force-accumulator! actor (map + force current-force))))
+
+(defn set-collision!
+  "Allowed types
+    :aabb with options :height :width :origin"
+  [actor &
+   {:keys [type]
+    :or {type :aabb}
+    :as attrs}]
+  (swap! (-> actor :collision) merge attrs)
+  actor)
