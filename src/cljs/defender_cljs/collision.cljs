@@ -25,6 +25,7 @@
         x2 (- cx2 (/ w2 2))
         y2 (- cy2 (/ h2 2))]
     (when (and
+           (not= first-actor second-actor)
            (< x1 (+ x2 w2))
            (< x2 (+ x1 w1))
            (< y1 (+ y2 h2))

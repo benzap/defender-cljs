@@ -98,7 +98,6 @@
        vx (condp = @ship-direction
             :right (- (+ (- vx) ship-fire-speed))
             :left (+ vx ship-fire-speed))]
-   (log "fire speed" vx)
    (fire-projectile :position [px py 0]
                     :velocity [vx 0 0]
                     :timeout 0.3)))

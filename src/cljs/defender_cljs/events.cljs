@@ -114,11 +114,30 @@
 ;; Collision Events System
 ;;
 
-(def collision-list (atom []))
+(def collision-handlers (atom []))
 
-(defn set-on-collision-actors [from-actor to-actor callback])
+(defn set-on-collision
+  "adding callbacks from an actor trait to another actor
+  trait. callback is of the form [first-actor second-actor]
+  
+  An actor trait at the time of writing can be :type or :name
 
-(defn set-on-collision-type [from-type to-type])
+  ex. (set-on-collision :from [:name :ship] 
+                        :to [:type :enemy]
+                        ...
+
+  providing an actor trait of [:all] chooses all actors
+  "
+  [& {:keys [name from to callback]
+      :or {from :all
+           to :all}}]
+  (swap! collision-handlers conj
+         {:name name :from from
+          :to to :callback callback}))
+
+(defn has-trait? [actor [attribute value]]
+  (if (= (get actor attribute) value)
+    true))
 
 (system/add-system!
  :collision-system
@@ -130,5 +149,18 @@
 
            collision-listing
            (collision/generate-collision-listing from-actors to-actors)]
-       (log collision-listing)
-       ))))
+       (doseq [{:keys [from to callback]} @collision-handlers
+               {from-actor :first to-actor :second} collision-listing]
+         (when (and
+                (has-trait? from-actor from)
+                (has-trait? to-actor to))
+           (callback from-actor to-actor)))))))
+
+(set-on-collision
+ :name :test
+ :from [:type :projectile]
+ :to [:type :enemy]
+ :callback
+ (fn [from to]
+   (log "hit!")
+   (scene/remove-actor! scene/main to)))

@@ -11,10 +11,12 @@
   (let [material (THREE.MeshBasicMaterial.
                   #js {:color color})
         geometry (THREE.CircleGeometry. 3 5)
-        circle (THREE.Mesh. geometry material)]
-    (a/create-actor circle
-                    :name "projectile"
-                    :type "projectile")))
+        circle (THREE.Mesh. geometry material)
+        actor (a/create-actor circle
+                    :name :projectile
+                    :type :projectile)]
+    (a/set-collision! actor :type :aabb :width 7 :height 7)
+    actor))
 
 (def projectile-listing
   {:basic (atom [])
