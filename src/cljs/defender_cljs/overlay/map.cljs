@@ -65,16 +65,16 @@
   @(scene :actor-list))
 
 (def width-padding 0)
-(def height-padding 5)
+(def height-padding 10)
 
 (defn update-point-position! [actor point-obj]
   (let [bounds 
         {:left left-bound
          :right right-bound
-         :top top-bound
-         :bottom bottom-bound
-         :width (- right-bound left-bound (+ width-padding))
-         :height (- top-bound bottom-bound (+ height-padding))
+         :top (- top-bound height-padding)
+         :bottom (+ bottom-bound height-padding)
+         :width (- right-bound left-bound)
+         :height (- top-bound bottom-bound)
          :center-x (+ (/ (- right-bound left-bound) 2) left-bound)
          :center-y (+ (/ (- top-bound bottom-bound) 2) bottom-bound)}
         

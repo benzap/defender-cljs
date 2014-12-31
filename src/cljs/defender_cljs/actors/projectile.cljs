@@ -32,9 +32,9 @@
           :green
           (make-projectile :color 0xaaffaa)
           :ship-phasor
-          (let [phasor (geo/square :width 50 :height 1)
+          (let [phasor (geo/square :width 50 :height 2 :color 0xffaaaa)
                 projectile (a/create-actor phasor :name :phasor :type :projectile)]
-            (a/set-collision! projectile :width 50 :height 1)
+            (a/set-collision! projectile :width 50 :height 2)
             projectile))]
     (swap! (projectile-listing type) conj
            {:obj projectile :active false})
