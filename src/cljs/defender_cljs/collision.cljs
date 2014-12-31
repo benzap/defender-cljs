@@ -40,3 +40,4 @@
          to to-list]
      (check-collision from to))))
 
+ 

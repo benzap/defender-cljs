@@ -8,7 +8,8 @@
             [defender-cljs.physics :as physics]
             [defender-cljs.actor :as a]
             [defender-cljs.events :as e]
-            [defender-cljs.systems.scene-tracking :refer [generate-fixed-width-map]])
+            [defender-cljs.systems.scene-tracking :refer [generate-fixed-width-map]]
+            [defender-cljs.systems.scene-bounds :refer [maintain-actor-bounds]])
   (:use [defender-cljs.utils :only [log get-random-location]]
         [defender-cljs.actors.ship :only [ship]]
         [defender-cljs.enemies.lander :only [make-lander]]
@@ -70,6 +71,13 @@
    system/System
    (run [_ props]
      (generate-fixed-width-map))))
+
+(system/add-system!
+ :game-bounds
+ (reify
+   system/System
+   (run [_ props]
+     (maintain-actor-bounds))))
 
 
 

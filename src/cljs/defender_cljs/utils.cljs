@@ -6,7 +6,7 @@
   (.apply (.-log js/console) js/console (clj->js (map clj->js msgs)))
   (last msgs))
 
-(def dead-zone 32)
+(def dead-zone 64)
 
 (defn get-random-location
   "Gets random location within the game scene bounds"
