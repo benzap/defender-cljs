@@ -19,6 +19,16 @@
 
 (def dom (.getElementById js/document "app"))
 
+;;Stats object
+(def stats (js/Stats.))
+(aset (-> stats .-domElement .-style) "position" "absolute")
+(aset (-> stats .-domElement .-style) "right" "0px")
+(aset (-> stats .-domElement .-style) "top" "0px")
+
+
+
+
+
 (def width (.-clientWidth dom))
 (def height (.-clientHeight dom))
 
@@ -33,7 +43,7 @@
     (scene/add-actor! scene/main lander)
     (a/set-position! lander (get-random-location))))
 
-(doseq [i (range 25)]
+(doseq [i (range 15)]
   (gen))
 
 ;;populate the main scene
@@ -50,6 +60,7 @@
 ;;clear the inside
 (aset dom "innerHTML" "")
 (.appendChild dom (-> renderer .-domElement))
+(.appendChild dom (-> stats .-domElement))
 
 ;;add all of our systems
 ;;(new-system-with-name :fixed-width-map (generate-fixed-width-map))
@@ -63,9 +74,11 @@
 
 
 (defn animate []
+  (.begin stats)
   (system/run-systems {:delta (/ 1 60.)})
   (physics/update-scene scene/main (/ 1 60.))
   (physics/update-scene scene/hud (/ 1 60.))
+  (.end stats)
 )
 
 (defn render []

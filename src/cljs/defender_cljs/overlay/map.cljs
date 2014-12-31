@@ -64,14 +64,17 @@
 (defn get-actor-list [scene]
   @(scene :actor-list))
 
+(def width-padding 0)
+(def height-padding 5)
+
 (defn update-point-position! [actor point-obj]
   (let [bounds 
         {:left left-bound
          :right right-bound
          :top top-bound
          :bottom bottom-bound
-         :width (- right-bound left-bound)
-         :height (- top-bound bottom-bound)
+         :width (- right-bound left-bound (+ width-padding))
+         :height (- top-bound bottom-bound (+ height-padding))
          :center-x (+ (/ (- right-bound left-bound) 2) left-bound)
          :center-y (+ (/ (- top-bound bottom-bound) 2) bottom-bound)}
         
@@ -85,7 +88,7 @@
         rely (- rely (/ c/view-height 2))
 
         mapx (+ (* relx (/ (bounds :width) c/map-width)) (bounds :center-x))
-        mapy (+ (* rely (/ (bounds :height) c/view-height)) (bounds :center-y))
+        mapy (+ (* rely (/ (bounds :height) (- c/view-height c/top-overlay-height))) (bounds :center-y))
 
         ]
     (obj/set-position! point-obj mapx mapy -5)))
@@ -100,7 +103,6 @@
   (let [map-actors (set (keys @map-points))
         scene-actors (set (get-actor-list scene/main))]
     (doseq [actor (difference map-actors scene-actors)]
-      (log "removing actor" actor)
       (remove-map-point! actor)))
 
   ;;iterate over our map-points, and update their positions
