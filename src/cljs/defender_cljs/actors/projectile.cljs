@@ -2,6 +2,7 @@
   (:use [defender-cljs.utils :only [log]])
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.scene :as scene]
+            [defender-cljs.canvas.geometry :as geo]
             [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-timeout]]))
 
@@ -20,7 +21,8 @@
 
 (def projectile-listing
   {:basic (atom [])
-   :green (atom [])})
+   :green (atom [])
+   :ship-phasor (atom [])})
 
 (defn add-projectile! [type]
   (let [projectile
@@ -28,7 +30,12 @@
           :basic
           (make-projectile)
           :green
-          (make-projectile :color 0xaaffaa))]
+          (make-projectile :color 0xaaffaa)
+          :ship-phasor
+          (let [phasor (geo/square :width 50 :height 1)
+                projectile (a/create-actor phasor :name :phasor :type :projectile)]
+            (a/set-collision! projectile :width 50 :height 1)
+            projectile))]
     (swap! (projectile-listing type) conj
            {:obj projectile :active false})
     projectile))

@@ -158,7 +158,7 @@
 
 (set-on-collision
  :name :test
- :from [:type :projectile]
+ :from [:name :phasor]
  :to [:type :enemy]
  :callback
  (fn [from to]

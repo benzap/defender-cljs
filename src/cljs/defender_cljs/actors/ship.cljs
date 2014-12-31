@@ -98,9 +98,11 @@
        vx (condp = @ship-direction
             :right (- (+ (- vx) ship-fire-speed))
             :left (+ vx ship-fire-speed))]
-   (fire-projectile :position [px py 0]
-                    :velocity [vx 0 0]
-                    :timeout 0.3)))
+   (fire-projectile 
+    :type :ship-phasor
+    :position [px py 0]
+    :velocity [vx 0 0]
+    :timeout 0.3)))
 
 (on-keydown
  (c/keyboard-config :bomb)
