@@ -28,8 +28,6 @@
 
 
 
-
-
 (def width (.-clientWidth dom))
 (def height (.-clientHeight dom))
 

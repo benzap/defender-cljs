@@ -98,6 +98,8 @@
   type -- defines more specialized spring behaviour. types are discussed below
           [default: :basic]
 
+  max-force -- max amount of spring force that can be applied
+
   anchor-position -- position of the anchor, that the spring follows
 
   Spring types: 
@@ -115,6 +117,7 @@
                    lock-x-axis
                    lock-y-axis
                    anchor-position
+                   max-force
                    ]
             :or {type :basic
                  spring-constant 0.1
@@ -123,7 +126,8 @@
                  lock-x-axis false
                  lock-y-axis false
                  anchor-position
-                 (a/get-position actor)}}]
+                 (a/get-position actor)
+                 max-force 10e10}}]
   (let [spring-reg
         {:actor actor
          :type type
@@ -132,8 +136,10 @@
          :damping-ratio damping-ratio
          :lock-x-axis lock-x-axis
          :lock-y-axis lock-y-axis
+         :max-force max-force
          :anchor-position (atom anchor-position)}]
     (swap! springed-actors conj spring-reg)
+    (log "test" spring-reg)
     spring-reg))
 
 (defn update-spring-anchor! [spring-reg & [x y z]]
@@ -152,7 +158,8 @@
 
         lock-x-axis (:lock-x-axis spring-reg)
         lock-y-axis (:lock-y-axis spring-reg)
-
+        max-force (:max-force spring-reg)
+        
         damping-ratio (:damping-ratio spring-reg)
         
         damping-constant
@@ -178,7 +185,7 @@
         (map (partial * (+ (- force-spring) (- force-damping)))
              (norm force-vector))
         ]
-    final-force))
+    (clamp final-force max-force)))
 
 (defmulti apply-spring-generator
   (fn [spring-reg props]

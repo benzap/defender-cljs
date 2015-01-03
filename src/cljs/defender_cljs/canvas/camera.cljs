@@ -35,6 +35,7 @@
                        :type :basic
                        :spring-length 0
                        :spring-constant 500
+                       :max-force 7000
                        :damping-ratio 2.0
                        :lock-y-axis true))
 
@@ -58,7 +59,7 @@
         [velx _ _] ship-velocity]
     (physics/update-spring-anchor!
      camera-spring
-     (+ posx (* velx delta 20.0)) 0)))
+     (+ posx (* velx delta 15.0)) 0)))
 
 ;;system for tracking and re-adjusting the anchor
 (system/add-system!

@@ -17,7 +17,7 @@
   (map
    (fn [elem]
      (cond
-      (.isNaN js/window elem) max-value
+      (.isNaN js/window elem) 0
       (>= elem max-value) max-value
       (<= elem (- max-value)) (- max-value)
       :else elem))

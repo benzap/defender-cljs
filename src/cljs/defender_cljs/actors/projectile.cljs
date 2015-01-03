@@ -3,6 +3,7 @@
   (:require [defender-cljs.actor :as a]
             [defender-cljs.canvas.scene :as scene]
             [defender-cljs.canvas.geometry :as geo]
+            [defender-cljs.events]
             [defender-cljs.constants :as c])
   (:require-macros [defender-cljs.events :refer [on-timeout]]))
 

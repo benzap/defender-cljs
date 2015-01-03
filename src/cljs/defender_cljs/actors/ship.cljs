@@ -12,7 +12,7 @@
 
 (def mass 1)
 (def damping 0.6)
-(def ship-thrust-speed 4000.0)
+(def ship-thrust-speed 3000.0)
 (def ship-elevation-speed 800.0)
 
 ;;load our ship assets
