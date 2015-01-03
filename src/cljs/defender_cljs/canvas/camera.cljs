@@ -35,7 +35,7 @@
                        :type :basic
                        :spring-length 0
                        :spring-constant 500
-                       :max-force 7000
+                       :max-force 5000
                        :damping-ratio 2.0
                        :lock-y-axis true))
 
