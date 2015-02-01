@@ -1,0 +1,18 @@
+{"version":3,
+ "file":
+ "/C:/Users/benzap/projects/defender-cljs/resources/public/js/out/defender_cljs/canvas/scene.js",
+ "sources":["scene.cljs"],
+ "lineCount":45,
+ "mappings":
+ ";AAAA;;;;AAKA;;;0CAAA,1CAAMK;uCAANL,UAAA,AAAA,IAAAC,aAAAD,aAAAC,iBAAA,EAAA,AAAAC,+BAAAD,aAAA,AAAAE,0BAAAC,mBAAAH,YAAAA,YAAA,AAAA,kDAAA,8FAAA,pBACmB,KAAAK,iFACJ,yBAAA,zBAACC;;;IAFhBP;EAAAA;wCAAAA;;;IAAAA;8BAAAA;;;;;;AAIA;;;6CAAA,uCAAA,pFAAMQ,uEAEHC,MAAMC,OACP,AAAM,AAAA,wGAAID,WAAuB,AAAA,uFAAIC;AACrC,OAACC,+BAAM,AAAA,gGAAIF,OAAmBG,eAAKF;;AAErC;;;gDAAA,0CAAA,1FAAMG,6EAEHJ,MAAMC,OACP,AAAS,AAAA,wGAAID,cAAuB,AAAA,uFAAIC;AACxC,OAACI,gCAAO,AAAA,gGAAIL,OACJ,2BAAA,WAAAM,kBAAA,xDAACE,wDAAQ,yCAAAF,lCAACG,4BAAKR;GAAf,AAAAM,0BAAyB,AAAA,gGAAIP;;AAEvC,8CAAA,sCAAA,pFAAMU,yEAAaV,MAAMW,KACvB,OAAM,AAAA,wGAAIX,WAAuBW;;AAEnC,iDAAA,yCAAA,1FAAMC,+EAAgBZ,MAAMW,KAC1B,OAAS,AAAA,wGAAIX,cAAuBW;;AAOtC,AAAKE,kCAAK,AAACjB;AAGX,AAAKkB,iCAAI,AAAClB",
+ "names":
+ ["p__28395", "map__28397", "cljs.core/seq?", "cljs.core/apply",
+  "cljs.core/hash-map", "defender-cljs.canvas.scene/create-scene",
+  "THREE/Scene", "cljs.core/atom",
+  "defender-cljs.canvas.scene/add-actor!", "scene", "actor",
+  "cljs.core/swap!", "cljs.core/conj",
+  "defender-cljs.canvas.scene/remove-actor!", "cljs.core/reset!",
+  "p1__28399#", "cljs.core/deref", "cljs.core/filter",
+  "cljs.core/not=", "defender-cljs.canvas.scene/add-object!", "obj",
+  "defender-cljs.canvas.scene/remove-object!",
+  "defender-cljs.canvas.scene/main", "defender-cljs.canvas.scene/hud"]}

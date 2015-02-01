@@ -1,0 +1,21 @@
+{"version":3,
+ "file":
+ "/C:/Users/benzap/projects/defender-cljs/resources/public/js/out/defender_cljs/canvas/sprite.js",
+ "sources":["sprite.cljs"],
+ "lineCount":62,
+ "mappings":
+ ";AAAA;;;;;;AAIA,AAAKA,0CAAY,yBAAA,zBAACC;AAElB;;;2CAAA,kDAAA,7FAAMC,kEAEHC,aAAaC,cACd,kHAAA,9GAAMC,UAAQ,AAAcC,6BAAiB,CAAA,sDAAeF,gBAC1D,AAACG,+BAAMP,wCAAYQ,gBAAML,aAAaE;AACtCA;;AAEJ,kCAAA,UAAA,AAAAI,5CAACC,sEAAeV;AAEhB;;;mDAAA,nDAAMiB;4DAANN,UAAA,AAAA,IAAAC,aAAAD,aAAAC,iBAAA,EAAA,AAAAC,+BAAAD,aAAA,AAAAE,0BAAAC,mBAAAH,YAAAA,wBAAA,AAAAI,wBAAAJ,eAAA,uDAAA,YAAA,/SACGT,6LACQe,kHAET,yGAAA,rGAAMb,UAAQ,AAAA,AAAAI,0BAAET,mDAAYG,cAC1B,YAAAgB,qBAAA,QAAA,6BACWd,dACEa;;qCANdf;IADHQ;EAAAA;6DAAAA,bACGR;;;IAAAA;IADHQ;mDAAAA,bACGR;;;;;;AASH;;;;;0CAAA,1CAAMmB;sDAANF,UAAA,AAAA,IAAAC,aAAAD,aAAAC,iBAAA,EAAA,AAAAR,+BAAAQ,aAAA,AAAAP,0BAAAC,mBAAAM,YAAAA,wBAAA,AAAAL,wBAAAK,eAAA,uDAAA,mFAAA,KAAA,cAAA,5YAGGE,gMAA0BC,4MAE3B,iDAAA,7CAAMC,SAAO,KAAAC,aAAeH,kBAG1B,AAACI,sDAAeF,OAAO,AAACG,0BAAMJ,OAAO,AAACK,2BAAOL;AAC7CC;;4BANDF;IAHHH;EAAAA;uDAAAA,hBAGGG;;;IAAAA;IAHHH;6CAAAA,hBAGGG;;;;;;AAQH,wDAAA,yCAAA,AAAA,jGAAMO,4FAAsBC",
+ "names":
+ ["defender-cljs.canvas.sprite/texture-map", "cljs.core/atom",
+  "defender-cljs.canvas.sprite/load-texture", "texture-name",
+  "texture-file", "texture", "THREE/ImageUtils", "cljs.core/swap!",
+  "cljs.core/assoc", "cljs.core/deref", "defender-cljs.utils/log",
+  "p__28400", "map__28402", "cljs.core/seq?", "cljs.core/apply",
+  "cljs.core/hash-map", "cljs.core/get",
+  "defender-cljs.canvas.sprite/make-sprite-material", "color",
+  "THREE/SpriteMaterial", "p__28404", "map__28406",
+  "defender-cljs.canvas.sprite/make-sprite", "sprite-material",
+  "scale", "sprite", "THREE/Sprite",
+  "defender-cljs.canvas.object/set-scale!", "cljs.core/first",
+  "cljs.core/second",
+  "defender-cljs.canvas.sprite/set-sprite-material!", "obj"]}

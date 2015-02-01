@@ -1,0 +1,22 @@
+{"version":3,
+ "file":
+ "/C:/Users/benzap/projects/defender-cljs/resources/public/js/out/defender_cljs/systems/scene_tracking.js",
+ "sources":["scene_tracking.cljs"],
+ "lineCount":84,
+ "mappings":
+ ";AAAA;;;;;;;;;;;;;;AAcA,oDAAA,0CAAA,9FAAMA,2EAAcC,SAASC,UAC3B,WAAA,qFAAA,5FAAMC,eACAC,OAAKC,sCACLC,UAAQ,CAAGL,WAASC,UACxB,GAAI,CAAI,CAAGI,UAAQF,WAAM,CAAGE,UAAQH;CAClC,QAAGD,WAAS,AAACK,wBAAID,QAAQF;;CACzBH;;;AAEN,gEAAA,qCAAA,rGAAMO,qGACJ,IAAAC,6GAAA,AAAAC,wBAAAD,WAAA,IAAA,cAAA,AAAAC,wBAAAD,WAAA,IAAA,kBAAA,AAAAC,wBAAAD,WAAA,IAAA,7JAAOE,yDAAMC,qDAAEA,tMAAG,AAACC,2CAAeC,oNAC5BC,SACA,AAACE,2BACA;yBAAA,PAAKC,OACH,GACC,mHAAA,nHAACC,yBAAE,AAAA,mFAAOD;CADX;;CAAA,GAEC,mHAAA,nHAACC,yBAAE,AAAA,mFAAOD;CAFX;;CAAA,AAAA;;;;;8JAJT,7JAEM,AAAAF,0BAME,AAAA,gGAAaI,mCACnB,IAAAC,aAAA,AAAAC,oCAAAC,eAAA,SAAAC,eAAA,QAAAC,WAAA,tEAAcV;AAAd,AAAA,GAAA,AAAA,CAAAU,WAAAD;CAAA,YAAA,AAAAE,yBAAAH,aAAAE,UAAA,AAAA,xDAAQP,wDACN,IAAAiB,0FAAA,AAAAzB,wBAAAyB,iBAAA,IAAA,uBAAA,AAAAzB,wBAAAyB,iBAAA,IAAA,uBAAA,AAAAzB,wBAAAyB,iBAAA,IAAA,+JAAA,rWAAOlC,wEAASoC,oEAAKC,lMAAM,AAACzB,2CAAeK,2NACrCjB,qBAAS,AAACD,4DAAaC,eAAS,CAAGU,QAAM,qCAAA,pCAAGN,2CAChD,uDAAA,vDAACkC,iDAAgBrB,yFAAOjB,mBAASoC,WAAKC;AAH1C;eAAAjB;eAAAE;eAAAC;eAAA,CAAAC,WAAA;;;;;;;;CAAA,IAAAE,qBAAA,AAAAL,wBAAAD,YAAA,AAAA,GAAAM;CAAA,AAAA,IAAAN,iBAAAM,mBAAA,AAAA,GAAA,AAAAC,uCAAAP;CAAA,IAAAQ,mBAAA,AAAAC,gCAAAT,gBAAA,AAAA;eAAA,AAAAU,+BAAAV;eAAAQ;eAAA,AAAAG,0BAAAH;eAAA;;;;;;;;CAAA,YAAA,AAAAI,0BAAAZ,gBAAA,AAAA,lDAAQH,kDACN,IAAAkB,0FAAA,AAAA1B,wBAAA0B,iBAAA,IAAA,uBAAA,AAAA1B,wBAAA0B,iBAAA,IAAA,uBAAA,AAAA1B,wBAAA0B,iBAAA,IAAA,+JAAA,rWAAOnC,wEAASoC,oEAAKC,lMAAM,AAACzB,2CAAeK,2NACrCjB,qBAAS,AAACD,4DAAaC,eAAS,CAAGU,QAAM,qCAAA,pCAAGN,2CAChD,uDAAA,vDAACkC,iDAAgBrB,yFAAOjB,mBAASoC,WAAKC;AAH1C;eAAA,AAAAJ,yBAAAb;eAAA;eAAA;eAAA;;;;;;;;;CAAA",
+ "names":
+ ["defender-cljs.systems.scene-tracking/modulus-wrap", "entity-x",
+  "camera-x", "xmin", "xmax", "defender-cljs.constants/map-width",
+  "local-x", "cljs.core/mod",
+  "defender-cljs.systems.scene-tracking/generate-fixed-width-map",
+  "vec__28670", "cljs.core/nth", "cam-x", "_",
+  "defender-cljs.actor/get-position",
+  "defender-cljs.canvas.camera/main-camera", "actors",
+  "cljs.core/deref", "cljs.core/filter", "actor", "cljs.core/=",
+  "defender-cljs.canvas.scene/main", "seq__28671", "cljs.core/seq",
+  "chunk__28672", "count__28673", "i__28674", "cljs.core/-nth",
+  "temp__4126__auto__", "cljs.core/chunked-seq?", "c__13356__auto__",
+  "cljs.core/chunk-first", "cljs.core/chunk-rest", "cljs.core/count",
+  "cljs.core/first", "cljs.core/next", "vec__28675", "vec__28676",
+  "ypos", "zpos", "defender-cljs.actor/set-position!"]}

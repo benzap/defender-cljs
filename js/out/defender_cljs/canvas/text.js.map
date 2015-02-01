@@ -1,0 +1,17 @@
+{"version":3,
+ "file":
+ "/C:/Users/benzap/projects/defender-cljs/resources/public/js/out/defender_cljs/canvas/text.js",
+ "sources":["text.cljs"],
+ "lineCount":23,
+ "mappings":
+ ";AAAA;;AAGA;;;iDAAA,oCAAAA,UAAA,AAAA,IAAAC,aAAAD,aAAAC,iBAAA,EAAA,AAAAC,+BAAAD,aAAA,AAAAE,0BAAAC,mBAAAH,YAAAA,uBAAA,AAAAI,wBAAAJ,eAAA,qDAAA,MAAA,9WAAMK,gFAEHC,qLAAaC,yGAEd,YAAAC,wBAAA,wBAAA,oBAAA,kBAAA,nEACCF,cAIYC;;AAEf;;;yCAAA,4BAAAE,UAAA,AAAA,IAAAC,aAAAD,aAAAC,iBAAA,EAAA,AAAAT,+BAAAS,aAAA,AAAAR,0BAAAC,mBAAAO,YAAAA,wBAAAA,2BAAA,AAAAN,wBAAAM,eAAA,uDAAA,uBAAA,AAAAN,wBAAAM,eAAA,sDAAA,1eAAMC,gEAEHL,sUAAaC,tHAAKK,3BAERC,qPACX,kMAAA,9LAAMC,WACA,AAACT,yDAAqBC,KAAKO,WAC3BE,WACA,KAAAC,wBAAA,UAAsCJ,aACtCK,OACA,KAAAC,WAAaJ,SAASC,WAC1B,MAAA,LAAME,yBAAsBJ;AAC5BI;;AAEJ,iDAAA,2CAAA,5FAAME,gFAAiBC,MAAMd,MAC3B,yIAAA,rIAAMe,kBAAgB,AAAID,yBACpBN,WAAS,AAACT,yDAAqBC,KAAKe,iBACxC,OAAA,NAAMD,gBAAad;AACnB,OAAA,NAAMc,oBAAiBN;AACvBA;;AAEJ,kDAAA,6CAAA,/FAAMQ,kFAAkBF,MAAMP,OAC5B,gMAAA,5LAAMP,OAAK,AAAIc,eACTC,kBAAgB,AAAID,yBACpBN,WAAS,AAACT,yDAAqBC,KAAK,AAACiB,0BAAMF,gBAAgBR,QAC/D,OAAA,NAAMO,oBAAiBN;AACvBA",
+ "names":
+ ["p__28442", "map__28444", "cljs.core/seq?", "cljs.core/apply",
+  "cljs.core/hash-map", "cljs.core/get",
+  "defender-cljs.canvas.text/create-text-geometry", "text", "size",
+  "THREE/TextGeometry", "p__28445", "map__28447",
+  "defender-cljs.canvas.text/create-label", "color", "attrs",
+  "geometry", "material", "THREE/MeshBasicMaterial", "mesh",
+  "THREE/Mesh", "defender-cljs.canvas.text/set-label-text!", "label",
+  "text-attributes", "defender-cljs.canvas.text/set-label-attrs!",
+  "cljs.core/merge"]}
